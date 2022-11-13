@@ -1,0 +1,84 @@
+# Keep cmake in the right place
+*.cmake
+!cmake/*
+CMakeLists/
+CMakeCache.txt
+
+# Doxygen
+Doxyfile
+
+# Build & Install
+build/
+prefix/
+cppcheck-build/
+cmake_install.cmake
+*.ninja
+
+# Coverage
+cmake/open-cpp-coverage.cmake
+
+# User Config
+CMakeLists.txt.user
+CMakeUserPresets.json
+
+# C++
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+
+# Conan Generated
+conan/				# Conan artifacts dir
+conan/*
+test_package/build	# Conan test package build
+conanbuildinfo.txt
+conaninfo.txt
+cmake-build-*/
+conan.lock
+conan_toolchain.cmake
+conanbuild.conf
+graph_info.json
+cmakedeps_macros.cmake
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix

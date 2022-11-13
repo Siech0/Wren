@@ -1,0 +1,36 @@
+# Configuration for Doxygen for use with CMake
+# Only options that deviate from the default are included
+# To create a new Doxyfile containing all available options, call `doxygen -g`
+
+# Get Project name and version from CMake
+PROJECT_NAME = "renderer"
+PROJECT_NUMBER = "0.1.0"
+
+# Add sources
+INPUT = "D:/dev/c++/renderer/README.md" "D:/dev/c++/renderer/projects/core/include" "D:/dev/c++/renderer/docs/pages"
+EXTRACT_ALL = YES
+RECURSIVE = YES
+OUTPUT_DIRECTORY = "D:/dev/c++/renderer/docs"
+
+# Use the README as a main page
+USE_MDFILE_AS_MAINPAGE = "D:/dev/c++/renderer/README.md"
+
+# set relative include paths
+FULL_PATH_NAMES = YES
+STRIP_FROM_PATH = "D:/dev/c++/renderer/include" "D:/dev/c++/renderer"
+STRIP_FROM_INC_PATH =
+
+# We use m.css to generate the html documentation, so we only need XML output
+GENERATE_XML = YES
+GENERATE_HTML = YES
+GENERATE_LATEX = NO
+XML_PROGRAMLISTING = YES
+CREATE_SUBDIRS = YES
+
+# Include all directories, files and namespaces in the documentation
+# Disable to include only explicitly documented objects
+M_SHOW_UNDOCUMENTED = YES
+
+# Doxygen Awesome CSS installation
+GENERATE_TREEVIEW = YES
+HTML_EXTRA_STYLESHEET = docs/doxygen-awesome-css/doxygen-awesome.css

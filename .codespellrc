@@ -1,0 +1,6 @@
+[codespell]
+builtin = clear,rare,en-GB_to_en-US,names,informal,code
+check-filenames = projects/*.cpp, projects/*.hpp
+check-hidden =
+skip = */.git,*/build,*/docs,*/.vs,*/github,*/.vscode,*/.ide,.gitignore
+quiet-level = 2
