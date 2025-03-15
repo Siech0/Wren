@@ -292,7 +292,7 @@ with section("format"):
     always_wrap = []
 
     # If true, the argument lists which are known to be sortable will be sorted
-    # lexicographicall
+    # lexicographically
     enable_sort = True
 
     # If true, the parsers may infer whether or not an argument list is sortable
