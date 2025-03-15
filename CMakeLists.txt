@@ -74,6 +74,7 @@ endif()
 find_package(Threads REQUIRED)
 find_package(Vulkan REQUIRED)
 find_package(glm REQUIRED)
+find_package(glfw3 REQUIRED)
 
 # Project Breakout #####
 add_subdirectory(projects)

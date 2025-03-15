@@ -1,1 +1,1 @@
-message(STATUS "TEST TARGETS")
+message(STATUS "Test targets")

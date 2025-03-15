@@ -36,7 +36,8 @@ Checks: "\
   performance-*,\
   portability-*,\
   readability-*,\
-  -bugprone-exception-escape
+  -bugprone-exception-escape,\
+  -misc-include-cleaner
 "
 WarningsAsErrors: ''
 CheckOptions:

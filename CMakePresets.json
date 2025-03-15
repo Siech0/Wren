@@ -66,7 +66,7 @@
       "name": "cppcheck",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_CPPCHECK": "cppcheck;--inline-suppr;--cppcheck-build-dir=cppcheck-build;--enable=all",
+        "CMAKE_CXX_CPPCHECK": "cppcheck;--inline-suppr;--enable=all;--suppress=missingIncludeSystem;--suppress=unmatchedSuppression;--suppress=unusedFunction",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
@@ -155,40 +155,10 @@
       }
     },
     {
-      "name": "sanitize",
-      "description": "Continuous integration settings for code sanitization.",
-      "inherits": [ "unix", "release-conan" ],
-      "binaryDir": "${sourceDir}/build/sanitize",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Sanitize",
-        "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=address,undefined -fno-omit-frame-pointer -fno-common"
-      }
-    },
-    {
-      "name": "sanitize-threads",
-      "description": "Continuous integration settings for code sanitization with thread sanitizer.",
-      "inherits": [ "unix", "release-conan" ],
-      "binaryDir": "${sourceDir}/build/sanitize-threads",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "SanitizeThreads",
-        "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=thread -fno-omit-frame-pointer -fno-common"
-      }
-    },
-    {
-      "name": "sanitize-memory",
-      "description": "Continuous integration settings for code sanitization with memory sanitizer.",
-      "inherits": [ "unix", "release-conan" ],
-      "binaryDir": "${sourceDir}/build/sanitize-memory",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "SanitizeMemory",
-        "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=memory -fno-omit-frame-pointer -fno-common"
-      }
-    },
-    {
       "name": "docs",
       "description": "Continuous integration settings for document generation.",
       "hidden": true,
-      "inherits": [ "build-defaults", "release-conan"],
+      "inherits": [ "build-defaults" ],
       "cacheVariables": {
         "RENDERER_BUILD_DOCS": "ON"
       }
@@ -204,13 +174,19 @@
       "binaryDir": "${sourceDir}/build",
       "installDir": "${sourceDir}/install",
       "hidden": true,
-      "inherits": ["cmake-pedantic", "strict-std23", "cmake-gen-ninja", "release-conan"]
+      "inherits": ["cmake-pedantic", "strict-std23", "cmake-gen-ninja"],
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_BUILD_SHARED_LIBS": "ON",
+        "CMAKE_BUILD_TYPE": "ON"
+      }
     },
     {
       "name": "default-msvc",
       "description": "Development configure presets for windows",
       "inherits": [
         "build-defaults",
+        "release-conan",
         "win64"
       ]
     },
@@ -221,7 +197,9 @@
         "CMAKE_BUILD_TYPE": "Debug"
       },
       "inherits": [
-        "default-msvc",
+        "build-defaults",
+        "debug-conan",
+        "win64",
         "clang-format",
         "spell-check",
         "docs"
@@ -241,6 +219,7 @@
       "description": "Development configure presets for unix",
       "inherits": [
         "build-defaults",
+        "release-conan",
         "unix"
       ]
     },
@@ -251,7 +230,8 @@
         "CMAKE_BUILD_TYPE": "Debug"
       },
       "inherits": [
-        "default-unix",
+        "build-defaults",
+        "debug-conan",
         "clang-format",
         "spell-check",
         "docs",
@@ -264,17 +244,38 @@
       "inherits": [
         "dev-unix",
         "clang-tidy",
-        "iwyu",
         "cppcheck"
       ]
     },
     {
-      "name": "sanitization",
-      "description": "Sanitization configure presets for unix",
-      "inherits": [
-        "default-unix",
-        "sanitize"
-      ]
+      "name": "sanitize",
+      "description": "Continuous integration settings for code sanitization.",
+      "inherits": [ "default-unix" ],
+      "binaryDir": "${sourceDir}/build/sanitize",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Sanitize",
+        "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=address,undefined -fno-omit-frame-pointer -fno-common"
+      }
+    },
+    {
+      "name": "sanitize-threads",
+      "description": "Continuous integration settings for code sanitization with thread sanitizer.",
+      "inherits": [ "default-unix" ],
+      "binaryDir": "${sourceDir}/build/sanitize-threads",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "SanitizeThreads",
+        "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=thread -fno-omit-frame-pointer -fno-common"
+      }
+    },
+    {
+      "name": "sanitize-memory",
+      "description": "Continuous integration settings for code sanitization with memory sanitizer.",
+      "inherits": [ "default-unix" ],
+      "binaryDir": "${sourceDir}/build/sanitize-memory",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "SanitizeMemory",
+        "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=memory -fno-omit-frame-pointer -fno-common"
+      }
     },
     {
       "name": "coverage",
