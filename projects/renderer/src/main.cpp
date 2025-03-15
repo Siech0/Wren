@@ -11,8 +11,6 @@
 #include <GLFW/glfw3.h>
 
 
-import core.gfx.vulkan.test;
-
 
 class window {
 

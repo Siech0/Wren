@@ -1,8 +1,5 @@
-add_library_target(
-  core-gfx-vulkan
-  STATIC
-  ALIAS_AS core::gfx-vulkan
-  PUBLIC CXX_MODULES "${CMAKE_CURRENT_SOURCE_DIR}/test.cppm"
-)
+add_library(core-gfx-vulkan STATIC)
+add_library(core::gfx-vulkan ALIAS core-gfx-vulkan)
 
+target_sources(core-gfx-vulkan PRIVATE test.cpp)
 target_link_libraries(core-gfx-vulkan PUBLIC core::common-inc)
