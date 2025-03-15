@@ -68,10 +68,30 @@ function(add_executable_target target_name)
   endif()
 
   if(public_headers)
-    target_sources(${target_name} PUBLIC FILE_SET public_headers TYPE HEADERS FILES ${public_headers})
+    target_sources(
+      ${target_name}
+      PUBLIC FILE_SET
+             public_headers
+             TYPE
+             HEADERS
+             BASE_DIRS
+             "${CMAKE_CURRENT_SOURCE_DIR}"
+             FILES
+             ${public_headers}
+    )
   endif()
   if(private_headers)
-    target_sources(${target_name} PRIVATE FILE_SET private_headers TYPE HEADERS FILES ${private_headers})
+    target_sources(
+      ${target_name}
+      PRIVATE FILE_SET
+              private_headers
+              TYPE
+              HEADERS
+              BASE_DIRS
+              "${CMAKE_CURRENT_SOURCE_DIR}"
+              FILES
+              ${private_headers}
+    )
   endif()
   if(public_sources)
     target_sources(${target_name} PUBLIC ${public_sources})
@@ -80,10 +100,30 @@ function(add_executable_target target_name)
     target_sources(${target_name} PRIVATE ${private_sources})
   endif()
   if(public_modules)
-    target_sources(${target_name} PUBLIC FILE_SET public_modules TYPE CXX_MODULES FILES ${public_modules})
+    target_sources(
+      ${target_name}
+      PUBLIC FILE_SET
+             public_modules
+             TYPE
+             CXX_MODULES
+             BASE_DIRS
+             "${CMAKE_CURRENT_SOURCE_DIR}"
+             FILES
+             ${public_modules}
+    )
   endif()
   if(private_modules)
-    target_sources(${target_name} PRIVATE FILE_SET private_modules TYPE CXX_MODULES FILES ${private_modules})
+    target_sources(
+      ${target_name}
+      PRIVATE FILE_SET
+              private_modules
+              TYPE
+              CXX_MODULES
+              BASE_DIRS
+              "${CMAKE_CURRENT_SOURCE_DIR}"
+              FILES
+              ${private_modules}
+    )
   endif()
 endfunction()
 
@@ -210,13 +250,43 @@ function(add_library_target target_name)
   endif()
 
   if(public_headers)
-    target_sources(${target_name} PUBLIC FILE_SET public_headers TYPE HEADERS FILES ${public_headers})
+    target_sources(
+      ${target_name}
+      PUBLIC FILE_SET
+             public_headers
+             TYPE
+             HEADERS
+             BASE_DIRS
+             "${CMAKE_CURRENT_SOURCE_DIR}"
+             FILES
+             ${public_headers}
+    )
   endif()
   if(private_headers)
-    target_sources(${target_name} PRIVATE FILE_SET private_headers TYPE HEADERS FILES ${private_headers})
+    target_sources(
+      ${target_name}
+      PRIVATE FILE_SET
+              private_headers
+              TYPE
+              HEADERS
+              BASE_DIRS
+              "${CMAKE_CURRENT_SOURCE_DIR}"
+              FILES
+              ${private_headers}
+    )
   endif()
   if(interface_headers)
-    target_sources(${target_name} INTERFACE FILE_SET interface_headers TYPE HEADERS FILES ${interface_headers})
+    target_sources(
+      ${target_name}
+      INTERFACE FILE_SET
+                interface_headers
+                TYPE
+                HEADERS
+                BASE_DIRS
+                "${CMAKE_CURRENT_SOURCE_DIR}"
+                FILES
+                ${interface_headers}
+    )
   endif()
   if(public_sources)
     target_sources(${target_name} PUBLIC ${public_sources})
@@ -228,13 +298,43 @@ function(add_library_target target_name)
     target_sources(${target_name} INTERFACE ${interface_sources})
   endif()
   if(public_modules)
-    target_sources(${target_name} PUBLIC FILE_SET public_modules TYPE CXX_MODULES FILES ${public_modules})
+    target_sources(
+      ${target_name}
+      PUBLIC FILE_SET
+             public_modules
+             TYPE
+             CXX_MODULES
+             BASE_DIRS
+             "${CMAKE_CURRENT_SOURCE_DIR}"
+             FILES
+             ${public_modules}
+    )
   endif()
   if(private_modules)
-    target_sources(${target_name} PRIVATE FILE_SET private_modules TYPE CXX_MODULES FILES ${private_modules})
+    target_sources(
+      ${target_name}
+      PRIVATE FILE_SET
+              private_modules
+              TYPE
+              CXX_MODULES
+              BASE_DIRS
+              "${CMAKE_CURRENT_SOURCE_DIR}"
+              FILES
+              ${private_modules}
+    )
   endif()
   if(interface_modules)
-    target_sources(${target_name} INTERFACE FILE_SET interface_modules TYPE CXX_MODULES FILES ${interface_modules})
+    target_sources(
+      ${target_name}
+      INTERFACE FILE_SET
+                interface_modules
+                TYPE
+                CXX_MODULES
+                BASE_DIRS
+                "${CMAKE_CURRENT_SOURCE_DIR}"
+                FILES
+                ${interface_modules}
+    )
   endif()
 endfunction()
 
