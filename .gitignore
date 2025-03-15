@@ -1,6 +1,6 @@
 # Keep cmake in the right place
 *.cmake
-!cmake/*
+!tools/cmake/*
 CMakeLists/
 CMakeCache.txt
 

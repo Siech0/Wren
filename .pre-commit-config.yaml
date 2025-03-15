@@ -12,6 +12,7 @@ repos:
     - id: check-ast
     - id: trailing-whitespace
     - id: end-of-file-fixer
+      exclude: ".*\\.cmake"
     - id: check-docstring-first
     - id: check-yaml
       exclude: ".clang-format"
