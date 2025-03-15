@@ -4,6 +4,60 @@
 with section("parse"):
     # Specify structure for custom cmake functions
     additional_commands = {
+        "add_executable_target": {
+            "flags": ["WIN32", "MACOSX_BUNDLE", "EXCLUDE_FROM_ALL"],
+            "kwargs": {
+                "ALIAS_AS": 1,
+                "PUBLIC": {
+                    "kwargs": {
+                        "SOURCES": "*",
+                        "HEADERS": "*",
+                        "CXX_MODULES": "*",
+                    }
+                },
+                "PRIVATE": {
+                    "kwargs": {
+                        "SOURCES": "*",
+                        "HEADERS": "*",
+                        "CXX_MODULES": "*",
+                    }
+                }
+            },
+            "pargs": 1
+        },
+        "add_library_target": {
+            "flags": ["STATIC", "SHARED", "MODULE", "OBJECT", "INTERFACE", "ALIAS_AS", "EXCLUDE_FROM_ALL"],
+            "kwargs": {
+                "ALIAS_AS": 1,
+                "PUBLIC": {
+                    "kwargs": {
+                        "SOURCES": "*",
+                        "HEADERS": "*",
+                        "CXX_MODULES": "*",
+                    }
+                },
+                "PRIVATE": {
+                    "kwargs": {
+                        "SOURCES": "*",
+                        "HEADERS": "*",
+                        "CXX_MODULES": "*",
+                    }
+                },
+                "INTERFACE": {
+                    "kwargs": {
+                        "SOURCES": "*",
+                        "HEADERS": "*",
+                        "CXX_MODULES": "*",
+                    }
+                }
+            },
+            "pargs": 1
+        },
+        "add_test_executable": {
+            "flags": ["WIN32", "MACOSX_BUNDLE", "EXCLUDE_FROM_ALL"],
+            "kwargs": {},
+            "pargs": "1+"
+        },
         "cc_binary": {
             "flags": ["ADD_RUNTARGET"],
             "kwargs": {

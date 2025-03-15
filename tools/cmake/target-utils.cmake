@@ -250,7 +250,6 @@ function(add_test_executable target_name)
   message(STATUS "  WIN32: ${ARG_WIN32}")
   message(STATUS "  MACOSX_BUNDLE: ${ARG_MACOSX_BUNDLE}")
   message(STATUS "  EXCLUDE_FROM_ALL: ${ARG_EXCLUDE_FROM_ALL}")
-  message(STATUS "  TEST_SUITE: ${ARG_TEST_SUITE}")
   message(STATUS "  UNPARSED_ARGUMENTS: ${ARG_UNPARSED_ARGUMENTS}")
 
   # All variadic arguments are put into ARG_UNPARSED_ARGUMENTS, that is, all of our sources should be here.
