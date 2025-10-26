@@ -180,10 +180,6 @@ target_sources(project_lib PRIVATE src/foo.cpp include/project/foo.hpp)
 target_include_directories(project_lib PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-
-project_set_warnings(project_lib)
-project_enable_ipo(project_lib)
-project_enable_sanitizers(project_lib)
 ```
 
 **Executable**
@@ -192,8 +188,6 @@ project_enable_sanitizers(project_lib)
 add_executable(project_tool src/main.cpp)
 add_executable(project::tool ALIAS project_tool)
 
-project_set_warnings(project_tool)
-project_enable_sanitizers(project_tool)
 target_link_libraries(project_tool PRIVATE project::lib)
 ```
 
@@ -203,7 +197,6 @@ target_link_libraries(project_tool PRIVATE project::lib)
 include(CTest)
 if (BUILD_TESTING)
   add_executable(project_foo_test tests/foo_test.cpp)
-  project_set_warnings(project_foo_test)
   target_link_libraries(project_foo_test PRIVATE project::lib GTest::gtest_main)
   add_test(NAME project.foo.test COMMAND project_foo_test)
 endif()
