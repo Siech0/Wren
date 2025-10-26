@@ -1,0 +1,38 @@
+{
+  "version": 10,
+  "configurePresets": [
+    {
+      "name": "strict-std23",
+      "description": "Force c++23 with no extensions.",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON"
+      }
+    },
+    {
+      "name": "cmake-gen-ninja",
+      "description": "Build using Ninja.",
+      "hidden": true,
+      "generator": "Ninja"
+    },
+    {
+      "name": "build-dirs",
+      "description": "Build directories for different configurations.",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build",
+      "installDir": "${sourceDir}/install"
+    },
+    {
+      "name": "build-defaults",
+      "description": "Default build settings.",
+      "hidden": true,
+      "inherits": ["strict-std23", "cmake-gen-ninja", "build-dirs"],
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_BUILD_TYPE": "ON"
+      }
+    }
+  ]
+}

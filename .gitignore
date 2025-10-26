@@ -1,6 +1,6 @@
 # Keep cmake in the right place
 *.cmake
-!tools/cmake/*
+!tools/cmake/**
 CMakeLists/
 CMakeCache.txt
 
@@ -69,6 +69,10 @@ conanbuild.conf
 graph_info.json
 cmakedeps_macros.cmake
 
+# VCPKG
+.vcpkg_installed/
+.cache
+
 # VSCode
 .vscode/*
 !.vscode/settings.json
@@ -82,3 +86,7 @@ cmakedeps_macros.cmake
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+
+# Python
+.venv

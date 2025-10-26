@@ -1,0 +1,47 @@
+{
+  "version": 10,
+  "include": [
+    "base_presets.json",
+    "compiler_presets.json"
+  ],
+  "configurePresets": [
+    {
+      "name": "doxygen",
+      "description": "Use doxygen documentation generator.",
+      "hidden": true,
+      "cacheVariables": {
+        "RENDERER_BUILD_DOCS": "ON"
+      }
+    },
+    {
+      "name": "clang-format",
+      "description": "Use clang-format formatting tool.",
+      "hidden": true,
+      "cacheVariables": {
+        "RENDERER_USE_FORMAT": "ON"
+      }
+    },
+    {
+      "name": "spell-check",
+      "description": "Use codespell spell-checking tool.",
+      "hidden": true,
+      "cacheVariables": {
+        "RENDERER_USE_SPELLCHECK": "ON"
+      }
+    },
+    {
+      "name": "docs",
+      "description": "Continuous integration settings for document generation.",
+      "hidden": true,
+      "inherits": ["build-defaults"],
+      "cacheVariables": {
+        "RENDERER_BUILD_DOCS": "ON"
+      }
+    },
+    {
+      "name": "docs-unix",
+      "description": "Continuous integration settings for document generation on MacOS + Ubuntu.",
+      "inherits": ["docs", "unix"]
+    }
+  ]
+}

@@ -1,5 +1,4 @@
-#ifndef CORE_UTILS_SCOPE_EXIT_HPP
-#define CORE_UTILS_SCOPE_EXIT_HPP
+#pragma once
 
 #include <concepts>
 #include <functional>
@@ -48,6 +47,3 @@ namespace core::utils {
     };
 
 } // namespace core::utils
-
-
-#endif

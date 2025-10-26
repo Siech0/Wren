@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.31)
 
 # Project Setup
-include(tools/cmake/extract-version.cmake)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/tools/cmake/modules")
+include(extract_version)
 extract_version("${CMAKE_CURRENT_LIST_DIR}/projects/core/include/core/version.hpp" RENDERER)
 
 project(
@@ -11,9 +12,17 @@ project(
 )
 message(STATUS "Renderer project version: ${RENDERER_VERSION}")
 
-include(tools/cmake/utils.cmake)
+include(utils)
 include(GNUInstallDirs)
 include(GenerateExportHeader)
+
+# Development: Place all DLLs and executables in common directory for easy testing
+if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+endif()
+if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+endif()
 
 # Set default build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -82,20 +91,20 @@ add_subdirectory(projects)
 # Installation #####
 if(RENDERER_USE_FORMAT)
   message(STATUS "Renderer generating format targets (format-check, format-fix).")
-  include(tools/cmake/format-targets.cmake)
+  include(format_targets)
 endif()
 
 if(RENDERER_USE_SPELLCHECK)
   message(STATUS "Renderer generating spellcheck targets (spell-check, spell-fix).")
-  include(tools/cmake/spell-targets.cmake)
+  include(spell_targets)
 endif()
 
 if(RENDERER_USE_DOCS)
   message(STATUS "Renderer generating documentation targets (docs-build).")
-  include(tools/cmake/docs-targets.cmake)
+  include(docs_targets)
 endif()
 
 if(RENDERER_INSTALL)
   message(STATUS "Renderer generating install targets.")
-  include(tools/cmake/install-rules.cmake)
+  include(install_rules)
 endif()

@@ -1,5 +1,4 @@
-#ifndef CORE_UTILITIES_UNIQUE_RESOURCE_HPP
-#define CORE_UTILITIES_UNIQUE_RESOURCE_HPP
+#pragma once
 
 // Adapted from reference implementation here: https://github.com/okdshin/unique_resource/blob/master/unique_resource.hpp
 
@@ -83,5 +82,3 @@ namespace core::utils {
         return unique_resource<R, D>(std::move(r), std::move(d), should_call_deleter);
     }
 } // namespace core::utils
-
-#endif // CORE_UTILITIES_UNIQUE_RESOURCE_HPP

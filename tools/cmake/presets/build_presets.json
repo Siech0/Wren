@@ -1,0 +1,64 @@
+{
+  "version": 10,
+  "include": [
+    "dev_presets.json",
+    "ci_presets.json"
+  ],
+  "buildPresets": [
+    {
+      "name": "defaults",
+      "hidden": true,
+      "jobs": 32
+    },
+    {
+      "name": "default-msvc",
+      "configurePreset": "default-msvc",
+      "inherits": "defaults"
+    },
+    {
+      "name": "default-unix",
+      "configurePreset": "default-unix",
+      "inherits": "defaults"
+    },
+    {
+      "name": "dev-msvc",
+      "configurePreset": "dev-msvc",
+      "inherits": "defaults"
+    },
+    {
+      "name": "dev-unix",
+      "configurePreset": "dev-unix",
+      "inherits": "defaults"
+    },
+    {
+      "name": "sanitize",
+      "configurePreset": "sanitize",
+      "inherits": "defaults"
+    },
+    {
+      "name": "sanitize-threads",
+      "configurePreset": "sanitize-threads",
+      "inherits": "defaults"
+    },
+    {
+      "name": "sanitize-memory",
+      "configurePreset": "sanitize-memory",
+      "inherits": "defaults"
+    },
+    {
+      "name": "coverage",
+      "configurePreset": "coverage",
+      "inherits": "defaults"
+    },
+    {
+      "name": "full-dev-msvc",
+      "configurePreset": "full-dev-msvc",
+      "inherits": "defaults"
+    },
+    {
+      "name": "full-dev-unix",
+      "configurePreset": "full-dev-unix",
+      "inherits": "defaults"
+    }
+  ]
+}

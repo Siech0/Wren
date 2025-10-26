@@ -1,6 +1,20 @@
 add_library(core-display STATIC)
 add_library(core::display ALIAS core-display)
 
-target_sources(core-display PRIVATE test.cpp)
+target_sources(
+  core-display
+  PRIVATE window.cpp
+  PUBLIC FILE_SET
+         public_headers
+         TYPE
+         HEADERS
+         BASE_DIRS
+         "${CORE_INCLUDEDIR}"
+         FILES
+         "${CORE_INCLUDEDIR}/core/display/window.hpp"
+)
+set_target_properties(core-display PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-target_link_libraries(core-display PUBLIC core::common-inc)
+find_package(glfw3 REQUIRED)
+find_package(Vulkan REQUIRED)
+target_link_libraries(core-display PUBLIC core::export glfw Vulkan::Vulkan)

@@ -1,0 +1,31 @@
+{
+  "version": 10,
+  "configurePresets": [
+    {
+      "name": "vcpkg",
+      "description": "Use vcpkg package manager.",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-llvm",
+        "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/tools/cmake/triplets"
+      }
+    },
+    {
+      "name": "tests",
+      "description": "Enable building tests.",
+      "hidden": true,
+      "cacheVariables": {
+        "ENABLE_TESTS": "ON"
+      }
+    },
+    {
+      "name": "benchmarks",
+      "description": "Enable building benchmarks.",
+      "hidden": true,
+      "cacheVariables": {
+        "ENABLE_BENCHMARKS": "ON"
+      }
+    }
+  ]
+}

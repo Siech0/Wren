@@ -1,0 +1,43 @@
+{
+  "version": 10,
+  "include": [
+    "base_presets.json"
+  ],
+  "configurePresets": [
+    {
+      "name": "cppcheck",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_CPPCHECK": "cppcheck;--inline-suppr;--enable=all;--suppress=missingIncludeSystem;--suppress=unmatchedSuppression;--suppress=unusedFunction",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "clang-tidy",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_CLANG_TIDY": "clang-tidy;--header-filter=${sourceDir}/*;-p;${sourceDir}/build",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      },
+      "inherits": "build-dirs"
+    },
+    {
+      "name": "clang-tidy-msvc",
+      "hidden": true,
+      "description": "clang-tidy with work-around for msvc environments.",
+      "cacheVariables": {
+        "CMAKE_CXX_CLANG_TIDY": "clang-tidy;--header-filter=${sourceDir}/*;--extra-arg=/EHsc;-p;${sourceDir}/build",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      },
+      "inherits": "build-dirs"
+    },
+    {
+      "name": "iwyu",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_INCLUDE_WHAT_YOU_USE": "iwyu",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ]
+}

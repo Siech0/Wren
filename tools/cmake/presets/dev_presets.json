@@ -1,0 +1,66 @@
+{
+  "version": 10,
+  "include": [
+    "base_presets.json",
+    "compiler_presets.json",
+    "package_manager_presets.json",
+    "tooling_presets.json",
+    "analysis_presets.json"
+  ],
+  "configurePresets": [
+    {
+      "name": "default-msvc",
+      "description": "Development configure presets for windows",
+      "inherits": ["build-defaults", "vcpkg", "win64"]
+    },
+    {
+      "name": "dev-msvc",
+      "description": "Development configure presets for windows",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      },
+      "inherits": ["build-defaults", "vcpkg", "win64", "clang-format", "spell-check", "docs"]
+    },
+    {
+      "name": "analysis-msvc",
+      "description": "All configure presets for windows, including static analysis tooling",
+      "inherits": ["dev-msvc", "cppcheck", "clang-tidy-msvc"]
+    },
+    {
+      "name": "full-dev-msvc",
+      "description": "Full development configure presets for windows with tests and benchmarks",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "win64", "clang-format", "spell-check", "docs"]
+    },
+    {
+      "name": "default-unix",
+      "description": "Development configure presets for unix",
+      "inherits": ["build-defaults", "vcpkg", "unix"]
+    },
+    {
+      "name": "dev-unix",
+      "description": "Development configure presets for unix",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "inherits": ["build-defaults", "vcpkg", "clang-format", "spell-check", "docs", "warnings-unix"]
+    },
+    {
+      "name": "analysis-unix",
+      "description": "All configure presets for unix, including static analysis tooling",
+      "inherits": ["dev-unix", "clang-tidy", "cppcheck"]
+    },
+    {
+      "name": "full-dev-unix",
+      "description": "Full development configure presets for unix with tests and benchmarks",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "clang-format", "spell-check", "docs", "warnings-unix"]
+    }
+  ]
+}

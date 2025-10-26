@@ -1,0 +1,14 @@
+{
+  "name": "renderer",
+  "version": "0.1.0",
+  "description": "A C++ rendering library",
+  "license": "MIT",
+  "dependencies": [
+    "glm",
+    "vulkan-memory-allocator",
+    "glfw3",
+    "gtest",
+    "benchmark"
+  ],
+  "builtin-baseline": "271a5b8850aa50f9a40269cbf3cf414b36e333d6"
+}

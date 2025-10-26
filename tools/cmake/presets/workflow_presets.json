@@ -1,0 +1,98 @@
+{
+  "version": 10,
+  "include": [
+    "dev_presets.json",
+    "ci_presets.json",
+    "build_presets.json",
+    "test_presets.json",
+    "package_presets.json"
+  ],
+  "workflowPresets": [
+    {
+      "name": "default-msvc",
+      "steps": [
+        {"type": "configure", "name": "default-msvc"},
+        {"type": "build", "name": "default-msvc"},
+        {"type": "test", "name": "default-msvc"},
+        {"type": "package", "name": "default-msvc"}
+      ]
+    },
+    {
+      "name": "default-unix",
+      "steps": [
+        {"type": "configure", "name": "default-unix"},
+        {"type": "build", "name": "default-unix"},
+        {"type": "test", "name": "default-unix"},
+        {"type": "package", "name": "default-unix"}
+      ]
+    },
+    {
+      "name": "dev-msvc",
+      "steps": [
+        {"type": "configure", "name": "dev-msvc"},
+        {"type": "build", "name": "dev-msvc"},
+        {"type": "test", "name": "dev-msvc"},
+        {"type": "package", "name": "dev-msvc"}
+      ]
+    },
+    {
+      "name": "dev-unix",
+      "steps": [
+        {"type": "configure", "name": "dev-unix"},
+        {"type": "build", "name": "dev-unix"},
+        {"type": "test", "name": "dev-unix"},
+        {"type": "package", "name": "dev-unix"}
+      ]
+    },
+    {
+      "name": "sanitize",
+      "steps": [
+        {"type": "configure", "name": "sanitize"},
+        {"type": "build", "name": "sanitize"},
+        {"type": "test", "name": "sanitize"}
+      ]
+    },
+    {
+      "name": "sanitize-threads",
+      "steps": [
+        {"type": "configure", "name": "sanitize-threads"},
+        {"type": "build", "name": "sanitize-threads"},
+        {"type": "test", "name": "sanitize-threads"}
+      ]
+    },
+    {
+      "name": "sanitize-memory",
+      "steps": [
+        {"type": "configure", "name": "sanitize-memory"},
+        {"type": "build", "name": "sanitize-memory"},
+        {"type": "test", "name": "sanitize-memory"}
+      ]
+    },
+    {
+      "name": "coverage",
+      "steps": [
+        {"type": "configure", "name": "coverage"},
+        {"type": "build", "name": "coverage"},
+        {"type": "test", "name": "coverage"}
+      ]
+    },
+    {
+      "name": "full-dev-msvc",
+      "steps": [
+        {"type": "configure", "name": "full-dev-msvc"},
+        {"type": "build", "name": "full-dev-msvc"},
+        {"type": "test", "name": "full-dev-msvc"},
+        {"type": "package", "name": "full-dev-msvc"}
+      ]
+    },
+    {
+      "name": "full-dev-unix",
+      "steps": [
+        {"type": "configure", "name": "full-dev-unix"},
+        {"type": "build", "name": "full-dev-unix"},
+        {"type": "test", "name": "full-dev-unix"},
+        {"type": "package", "name": "full-dev-unix"}
+      ]
+    }
+  ]
+}
