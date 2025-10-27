@@ -1,0 +1,1 @@
+Thin OS abstractions: filesystem (async + memory-mapped file), threads/tasks, atomics, fibers (optional), high-res clock, virtual memory/page alloc, dynamic library loader, CPU/GPU feature query, environment, UTF conversions.

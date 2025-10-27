@@ -18,6 +18,24 @@
       ]
     },
     {
+        "name": "dev-msvc",
+        "steps": [
+            {"type": "configure", "name": "dev-msvc"},
+            {"type": "build", "name": "dev-msvc"},
+            {"type": "test", "name": "dev-msvc"},
+            {"type": "package", "name": "dev-msvc"}
+        ]
+    },
+    {
+        "name": "full-dev-msvc",
+        "steps": [
+            {"type": "configure", "name": "full-dev-msvc"},
+            {"type": "build", "name": "full-dev-msvc"},
+            {"type": "test", "name": "full-dev-msvc"},
+            {"type": "package", "name": "full-dev-msvc"}
+        ]
+    },
+    {
       "name": "default-unix",
       "steps": [
         {"type": "configure", "name": "default-unix"},
@@ -27,30 +45,30 @@
       ]
     },
     {
-      "name": "dev-msvc",
-      "steps": [
-        {"type": "configure", "name": "dev-msvc"},
-        {"type": "build", "name": "dev-msvc"},
-        {"type": "test", "name": "dev-msvc"},
-        {"type": "package", "name": "dev-msvc"}
-      ]
+        "name": "dev-unix",
+        "steps": [
+            {"type": "configure", "name": "dev-unix"},
+            {"type": "build", "name": "dev-unix"},
+            {"type": "test", "name": "dev-unix"},
+            {"type": "package", "name": "dev-unix"}
+        ]
     },
     {
-      "name": "dev-unix",
-      "steps": [
-        {"type": "configure", "name": "dev-unix"},
-        {"type": "build", "name": "dev-unix"},
-        {"type": "test", "name": "dev-unix"},
-        {"type": "package", "name": "dev-unix"}
-      ]
+        "name": "full-dev-unix",
+        "steps": [
+            {"type": "configure", "name": "full-dev-unix"},
+            {"type": "build", "name": "full-dev-unix"},
+            {"type": "test", "name": "full-dev-unix"},
+            {"type": "package", "name": "full-dev-unix"}
+        ]
     },
     {
-      "name": "sanitize",
-      "steps": [
-        {"type": "configure", "name": "sanitize"},
-        {"type": "build", "name": "sanitize"},
-        {"type": "test", "name": "sanitize"}
-      ]
+        "name": "sanitize",
+        "steps": [
+            {"type": "configure", "name": "sanitize"},
+            {"type": "build", "name": "sanitize"},
+            {"type": "test", "name": "sanitize"}
+        ]
     },
     {
       "name": "sanitize-threads",
@@ -74,24 +92,6 @@
         {"type": "configure", "name": "coverage"},
         {"type": "build", "name": "coverage"},
         {"type": "test", "name": "coverage"}
-      ]
-    },
-    {
-      "name": "full-dev-msvc",
-      "steps": [
-        {"type": "configure", "name": "full-dev-msvc"},
-        {"type": "build", "name": "full-dev-msvc"},
-        {"type": "test", "name": "full-dev-msvc"},
-        {"type": "package", "name": "full-dev-msvc"}
-      ]
-    },
-    {
-      "name": "full-dev-unix",
-      "steps": [
-        {"type": "configure", "name": "full-dev-unix"},
-        {"type": "build", "name": "full-dev-unix"},
-        {"type": "test", "name": "full-dev-unix"},
-        {"type": "package", "name": "full-dev-unix"}
       ]
     }
   ]

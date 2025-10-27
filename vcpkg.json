@@ -1,7 +1,7 @@
 {
-  "name": "renderer",
+  "name": "wren",
   "version": "0.1.0",
-  "description": "A C++ rendering library",
+  "description": "A C++ rendering framework & engine",
   "license": "MIT",
   "dependencies": [
     "glm",
