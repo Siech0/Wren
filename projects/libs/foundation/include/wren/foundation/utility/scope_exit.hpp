@@ -3,7 +3,7 @@
 #include <concepts>
 #include <functional>
 
-namespace core::utils {
+namespace wren::foundation::utility {
     class scope_exit {
     public:
         using function_type = std::move_only_function<void()>;
@@ -46,4 +46,4 @@ namespace core::utils {
         scope_exit(scope_exit const&) = delete;
     };
 
-} // namespace core::utils
+} // namespace wren::foundation::utility

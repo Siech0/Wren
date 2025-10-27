@@ -68,8 +68,8 @@ function(wren_add_backend backend_name)
     )
     target_sources(wren_rhi_${backend_name_lc}
         PUBLIC
-            FILE_SET HEADERS FILES
-                "${WREN_RHI_OPENGL_EXPORT_INCLUDEDIR}/wren/rhi/${backend_name_lc}/export.hpp"
+            FILE_SET HEADERS BASE_DIRS "${WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR}" FILES
+                "${WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR}/wren/rhi/${backend_name_lc}/export.hpp"
     )
 
     # Install targets

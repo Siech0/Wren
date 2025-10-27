@@ -25,11 +25,18 @@ target_compile_features(wren_platform
     PUBLIC cxx_std_23
 )
 target_sources(wren_platform
-    PUBLIC
+    PRIVATE
         "src/window.cpp"
     PUBLIC
         FILE_SET HEADERS FILES
             "${WREN_PLATFORM_INCLUDEDIR}/wren/platform/window.hpp"
+)
+
+# Dependency management
+find_package(glfw3 CONFIG REQUIRED)
+target_link_libraries(wren_platform
+    PRIVATE
+        glfw
 )
 
 # Set visibility and shared object information
@@ -56,7 +63,7 @@ generate_export_header(wren_platform
 )
 target_sources(wren_platform
     PUBLIC
-        FILE_SET HEADERS FILES
+        FILE_SET HEADERS BASE_DIRS "${WREN_PLATFORM_EXPORT_INCLUDEDIR}" FILES
             "${WREN_PLATFORM_EXPORT_INCLUDEDIR}/wren/platform/export.hpp"
 )
 

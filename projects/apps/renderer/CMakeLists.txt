@@ -1,6 +1,17 @@
 find_package(glfw3)
 
-add_executable(renderer "src/main.cpp")
-add_executable(renderer::renderer ALIAS renderer)
+add_executable(wren_renderer "src/main.cpp")
+add_executable(wren::renderer ALIAS wren_renderer)
 
-target_link_libraries(renderer PRIVATE core::core glm::glm Vulkan::Vulkan glfw)
+target_compile_features(wren_renderer PRIVATE cxx_std_23)
+
+# Dependency setup
+find_package(glfw3 CONFIG REQUIRED)
+target_link_libraries(wren_renderer
+    PRIVATE
+        glm::glm
+        glfw
+        wren::foundation
+        wren::platform
+        wren::version_info
+)

@@ -4,10 +4,11 @@ cmake_minimum_required(VERSION 4.2)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/tools/cmake/modules")
 include(versioning)
 
+set(WREN_VERSION_INCLUDEDIR "${CMAKE_BINARY_DIR}/include")
 wren_extract_version(
   VERSION_FILE "${CMAKE_CURRENT_LIST_DIR}/project.json"
   STATE_FILE "${CMAKE_BINARY_DIR}/last_build.json"
-  HEADER_OUT "${CMAKE_CURRENT_LIST_DIR}/projects/core/include/core/version.hpp"
+  HEADER_OUT "${WREN_VERSION_INCLUDEDIR}/wren/version.hpp"
 )
 message(STATUS "Wren version: ${WREN_VERSION_STRING} (${WREN_VERSION}, build: ${WREN_VERSION_BUILD})")
 

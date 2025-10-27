@@ -2,11 +2,10 @@
 
 #include <stdexcept>
 
-#define GLFW_INCLUDE_VULKAN // TODO: Eventually get rid of this.
 #include <GLFW/glfw3.h>
 
 
-namespace core::display {
+namespace wren::platform {
 
     window::window(int width, int height, const std::string_view title) {
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -62,4 +61,8 @@ namespace core::display {
         glfwDestroyWindow(_window);
     }
 
-} // namespace core::display
+    void window::poll_events() noexcept {
+        glfwPollEvents();
+    }
+
+} // namespace wren::platform

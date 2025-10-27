@@ -2,12 +2,13 @@
 
 #include <string_view>
 
-#include <GLFW/glfw3.h>
+#include <wren/platform/export.hpp>
 
-#include <core/export.hpp>
 
-namespace core::display {
-    class CORE_EXPORT window  {
+struct GLFWwindow; // Opaque forward declaration
+
+namespace wren::platform {
+    class WREN_PLATFORM_EXPORT window  {
     public:
 
         window(int width, int height, std::string_view title);
@@ -27,10 +28,13 @@ namespace core::display {
         [[nodiscard]]
         auto should_close() const noexcept -> bool;
 
+        void poll_events() noexcept;
+
     private:
         static inline bool _system_initialized = false;
         GLFWwindow *_window;
 
         void release();
     };
-}
+
+} // namespace wren::platform

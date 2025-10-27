@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "any": "cpp",
+        "exception": "cpp",
+        "functional": "cpp",
+        "memory": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "ostream": "cpp",
+        "print": "cpp"
+    }
+}
