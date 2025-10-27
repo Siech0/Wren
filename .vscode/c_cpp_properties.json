@@ -2,7 +2,6 @@
     "configurations": [
         {
             "name": "Win32",
-            "compilerPath": "C:/Program Files/LLVM/bin/clang-cl.exe",
             "compilerArgs": [
                 "-std:c++23",
                 "/permissive-",
