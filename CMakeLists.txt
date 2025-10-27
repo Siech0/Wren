@@ -6,16 +6,16 @@ include(versioning)
 
 set(WREN_VERSION_INCLUDEDIR "${CMAKE_BINARY_DIR}/include")
 wren_extract_version(
-  VERSION_FILE "${CMAKE_CURRENT_LIST_DIR}/project.json"
-  STATE_FILE "${CMAKE_BINARY_DIR}/last_build.json"
-  HEADER_OUT "${WREN_VERSION_INCLUDEDIR}/wren/version.hpp"
+    VERSION_FILE "${CMAKE_CURRENT_LIST_DIR}/project.json"
+    STATE_FILE "${CMAKE_BINARY_DIR}/last_build.json"
+    HEADER_OUT "${WREN_VERSION_INCLUDEDIR}/wren/version.hpp"
 )
 message(STATUS "Wren version: ${WREN_VERSION_STRING} (${WREN_VERSION}, build: ${WREN_VERSION_BUILD})")
 
 project(
-  renderer
-  VERSION ${WREN_VERSION}
-  LANGUAGES CXX
+    renderer
+    VERSION ${WREN_VERSION}
+    LANGUAGES CXX
 )
 message(STATUS "Wren project version: ${WREN_VERSION_STRING}")
 
@@ -23,10 +23,10 @@ include(utils)
 
 # Development: Place all DLLs and executables in common directory for easy testing
 if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 endif()
 if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 endif()
 
 ###### Options ######
@@ -48,29 +48,25 @@ option(WREN_INSTALL "Generate install targets." ${PROJECT_IS_TOP_LEVEL})
 
 # Dependency Management #####
 if(WREN_BUILD_TESTS)
-  enable_testing()
-  find_package(GTest)
+    enable_testing()
+    find_package(GTest)
 endif()
 
 if(WREN_BUILD_BENCHMARKS)
-  find_package(benchmark)
+    find_package(benchmark)
 endif()
-
-find_package(Threads REQUIRED)
-find_package(Vulkan REQUIRED)
-find_package(glm REQUIRED)
-find_package(glfw3 REQUIRED)
 
 # Project Breakout #####
 add_subdirectory(projects)
 
 # Installation #####
 if(WREN_USE_DOCS)
-  message(STATUS "Renderer generating documentation targets (docs-build).")
-  include(docs_targets)
+    message(STATUS "Renderer generating documentation targets (docs-build).")
+    include(docs_targets)
 endif()
 
 if(WREN_INSTALL)
-  message(STATUS "Renderer generating install targets.")
-  include(install_rules)
+    message(STATUS "Renderer generating install targets.")
+    include(install_rules)
+    include(packaging_rules)
 endif()

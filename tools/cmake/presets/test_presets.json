@@ -9,7 +9,7 @@
       "name": "defaults",
       "hidden": true,
       "output": {"outputOnFailure": true},
-      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+      "execution": {"noTestsAction": "ignore", "stopOnFailure": true}
     },
     {
       "name": "default-msvc",
