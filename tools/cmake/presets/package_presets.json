@@ -7,7 +7,7 @@
     {
       "name": "defaults",
       "hidden": true,
-      "generators": ["TGZ;ZIP"]
+      "generators": ["TGZ", "ZIP"]
     },
     {
       "name": "default-msvc",
