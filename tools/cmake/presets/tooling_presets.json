@@ -6,30 +6,6 @@
   ],
   "configurePresets": [
     {
-      "name": "doxygen",
-      "description": "Use doxygen documentation generator.",
-      "hidden": true,
-      "cacheVariables": {
-        "RENDERER_BUILD_DOCS": "ON"
-      }
-    },
-    {
-      "name": "clang-format",
-      "description": "Use clang-format formatting tool.",
-      "hidden": true,
-      "cacheVariables": {
-        "RENDERER_USE_FORMAT": "ON"
-      }
-    },
-    {
-      "name": "spell-check",
-      "description": "Use codespell spell-checking tool.",
-      "hidden": true,
-      "cacheVariables": {
-        "RENDERER_USE_SPELLCHECK": "ON"
-      }
-    },
-    {
       "name": "docs",
       "description": "Continuous integration settings for document generation.",
       "hidden": true,

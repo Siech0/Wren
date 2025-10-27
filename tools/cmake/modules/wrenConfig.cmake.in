@@ -1,0 +1,11 @@
+@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+
+# declare dependencies of installed targets
+find_dependency(glm CONFIG)
+find_dependency(glfw3 CONFIG)
+
+# bring in all sub-exports (installed by subpackages to the same dir)
+include("${CMAKE_CURRENT_LIST_DIR}/wren_foundation_targets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/wren_platform_targets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/wren_rhi_targets.cmake")

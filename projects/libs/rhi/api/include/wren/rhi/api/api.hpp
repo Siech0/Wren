@@ -1,0 +1,4 @@
+#ifndef WREN_RHI_API_API_HPP
+#define WREN_RHI_API_API_HPP
+
+#endif // WREN_RHI_API_API_HPP

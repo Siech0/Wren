@@ -26,7 +26,7 @@ install(TARGETS wren_foundation
 install(EXPORT wren_foundation_targets
     FILE wren_foundation_targets.cmake
     NAMESPACE wren::
-    DESTINATION lib/cmake/wren_foundation
+    DESTINATION lib/cmake/wren
     COMPONENT development
 )
 install(DIRECTORY "${WREN_FOUNDATION_INCLUDEDIR}/"

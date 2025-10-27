@@ -82,7 +82,15 @@ function(wren_add_backend backend_name)
     )
     install(TARGETS wren_rhi_${backend_name_lc}
         EXPORT wren_rhi_targets
-        FILE_SET HEADERS
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+        FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
+    )
+    install(EXPORT wren_rhi_targets
+        FILE wren_rhi_targets.cmake
+        NAMESPACE wren::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/wren
         COMPONENT development
     )
 

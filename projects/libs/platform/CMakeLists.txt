@@ -28,7 +28,7 @@ target_sources(wren_platform
     PRIVATE
         "src/window.cpp"
     PUBLIC
-        FILE_SET HEADERS FILES
+        FILE_SET HEADERS BASE_DIRS "${WREN_PLATFORM_INCLUDEDIR}" FILES
             "${WREN_PLATFORM_INCLUDEDIR}/wren/platform/window.hpp"
 )
 
@@ -73,6 +73,15 @@ include(CMakePackageConfigHelpers)
 # Install library target
 install(TARGETS wren_platform
     EXPORT wren_platform_targets
-    COMPONENT runtime
-    FILE_SET HEADERS COMPONENT development
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+    FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
+)
+# Install export set
+install(EXPORT wren_platform_targets
+  FILE wren_platform_targets.cmake
+  NAMESPACE wren::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/wren
+  COMPONENT development
 )

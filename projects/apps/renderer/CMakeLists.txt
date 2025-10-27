@@ -16,3 +16,9 @@ target_link_libraries(wren_renderer
         wren::platform
         wren::version_info
 )
+
+# Installation
+install(TARGETS wren_renderer
+    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    COMPONENT applications
+)

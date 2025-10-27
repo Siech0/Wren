@@ -12,21 +12,21 @@ target_include_directories(wren_rhi_api INTERFACE
     $<BUILD_INTERFACE:${WREN_RHI_API_INCLUDEDIR}>
 )
 target_compile_features(wren_rhi_api INTERFACE cxx_std_23)
-
+target_sources(wren_rhi_api INTERFACE
+    PUBLIC
+        FILE_SET HEADERS BASE_DIRS "${WREN_RHI_API_INCLUDEDIR}" FILES
+            "${WREN_RHI_API_INCLUDEDIR}/wren/rhi/api/api.hpp"
+)
 
 # Install target
 include(GNUInstallDirs)
 install(TARGETS wren_rhi_api
     EXPORT wren_rhi_api_targets
-    COMPONENT development
+    FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
 )
 install(EXPORT wren_rhi_api_targets
     FILE wren_rhi_api_targets.cmake
     NAMESPACE wren::
-    DESTINATION lib/cmake/wren
-    COMPONENT development
-)
-install(DIRECTORY "${RHI_API_INCLUDEDIR}/"
-    DESTINATION include/wren/rhi_api
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/wren
     COMPONENT development
 )

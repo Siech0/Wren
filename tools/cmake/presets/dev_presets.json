@@ -21,7 +21,7 @@
         "CMAKE_C_COMPILER": "clang-cl",
         "CMAKE_CXX_COMPILER": "clang-cl"
       },
-      "inherits": ["build-defaults", "vcpkg", "win64", "clang-format", "spell-check", "docs"]
+      "inherits": ["build-defaults", "vcpkg", "win64", "docs"]
     },
     {
       "name": "analysis-msvc",
@@ -34,7 +34,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "win64", "clang-format", "spell-check", "docs"]
+      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "win64", "docs"]
     },
     {
       "name": "default-unix",
@@ -47,7 +47,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "inherits": ["build-defaults", "vcpkg", "clang-format", "spell-check", "docs", "warnings-unix"]
+      "inherits": ["build-defaults", "vcpkg", "docs", "warnings-unix"]
     },
     {
       "name": "analysis-unix",
@@ -60,7 +60,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "clang-format", "spell-check", "docs", "warnings-unix"]
+      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "docs", "warnings-unix"]
     }
   ]
 }

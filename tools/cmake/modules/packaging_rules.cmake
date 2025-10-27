@@ -24,7 +24,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 # Install components (runtime, development, docs, tools)
 # ------------------------------------------------------------------------------
 
-set(CPACK_COMPONENTS_ALL runtime development docs tools)
+set(CPACK_COMPONENTS_ALL runtime development docs tools applications)
 
 # Friendly display names
 set(CPACK_COMPONENT_RUNTIME_DISPLAY_NAME "Runtime Libraries")
@@ -37,6 +37,7 @@ set(CPACK_COMPONENT_RUNTIME_DESCRIPTION "Shared libraries and executables requir
 set(CPACK_COMPONENT_DEVELOPMENT_DESCRIPTION "C++ headers and CMake targets to develop with Wren.")
 set(CPACK_COMPONENT_DOCS_DESCRIPTION "API documentation and user manuals generated via Doxygen.")
 set(CPACK_COMPONENT_TOOLS_DESCRIPTION "Auxiliary build and resource processing tools.")
+set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "Executable applications built with Wren.")
 
 # Group components for installers
 set(CPACK_COMPONENT_GROUP_WREN_DISPLAY_NAME "Wren Engine")
@@ -45,6 +46,7 @@ set(CPACK_COMPONENT_RUNTIME_GROUP WREN)
 set(CPACK_COMPONENT_DEVELOPMENT_GROUP WREN)
 set(CPACK_COMPONENT_DOCS_GROUP WREN)
 set(CPACK_COMPONENT_TOOLS_GROUP WREN)
+set(CPACK_COMPONENT_APPLICATIONS_GROUP WREN)
 
 # ------------------------------------------------------------------------------
 # Packaging formats and defaults
@@ -52,13 +54,6 @@ set(CPACK_COMPONENT_TOOLS_GROUP WREN)
 
 # Common archive formats
 set(CPACK_GENERATOR "ZIP;TGZ")
-
-# Windows NSIS / macOS pkg
-if(WIN32)
-    list(APPEND CPACK_GENERATOR "NSIS")
-elseif(APPLE)
-    list(APPEND CPACK_GENERATOR "DragNDrop")
-endif()
 
 # Installer options (for NSIS, DMG, etc.)
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "wren-${CPACK_PACKAGE_VERSION}")
