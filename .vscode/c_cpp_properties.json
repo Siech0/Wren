@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "compilerPath": "C:/Program Files/LLVM/bin/clang-cl.exe",
+            "compilerArgs": [
+                "-std:c++23",
+                "/permissive-",
+                "/Zc:__cplusplus"
+            ],
+            "intelliSenseMode": "windows-clang-x64",
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+        }
+    ],
+    "version": 4
+}

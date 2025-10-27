@@ -5,7 +5,7 @@
 #include <utility>
 #include <concepts>
 
-namespace core::utils {
+namespace wren::foundation::utility {
 
     template<std::moveable R, std::invocable<R&&> D> class unique_resource {
     private:
@@ -81,4 +81,4 @@ namespace core::utils {
         bool should_call_deleter = not bool(r == invalid);
         return unique_resource<R, D>(std::move(r), std::move(d), should_call_deleter);
     }
-} // namespace core::utils
+} // namespace wren::foundation::utility
