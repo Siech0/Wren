@@ -2,8 +2,6 @@
 # CPack configuration for Wren project
 # ------------------------------------------------------------------------------
 
-include(CPack)
-
 # Basic metadata ---------------------------------------------------------------
 set(CPACK_PACKAGE_NAME "wren")
 set(CPACK_PACKAGE_VENDOR "Gavin Dunlap")
