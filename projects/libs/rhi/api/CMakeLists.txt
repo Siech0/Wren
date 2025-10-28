@@ -16,7 +16,10 @@ target_sources(wren_rhi_api INTERFACE
     PUBLIC
         FILE_SET HEADERS BASE_DIRS "${WREN_RHI_API_INCLUDEDIR}" FILES
             "${WREN_RHI_API_INCLUDEDIR}/wren/rhi/api/api.hpp"
+            "${WREN_RHI_API_INCLUDEDIR}/wren/rhi/api/features.hpp"
+            "${WREN_RHI_API_INCLUDEDIR}/wren/rhi/api/enums.hpp"
 )
+target_link_libraries(wren_rhi_api INTERFACE wren::foundation)
 
 # Install target
 include(GNUInstallDirs)
