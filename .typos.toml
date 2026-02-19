@@ -3,4 +3,5 @@ extend-ignore-re = [
     "(?i)0x[A-F0-9']+(UL{0,2})?", # Ignore hex values that can be false positives, including digit separators and a ULL-type suffix
     "Fo", # MSVC flag
     "seh", # MSVC flag
+    "lod", # Graphics terminology.
 ]

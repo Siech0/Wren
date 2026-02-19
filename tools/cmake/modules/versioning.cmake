@@ -50,6 +50,18 @@ function(wren_extract_version)
     set(_GIT_SHA "nogit")
   endif()
 
+  # Check if HEAD is exactly on a tag (e.g. v1.2.0)
+  execute_process(
+    COMMAND git describe --exact-match --tags HEAD
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    OUTPUT_VARIABLE _GIT_TAG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+    RESULT_VARIABLE _TAG_OK)
+  if(NOT _TAG_OK EQUAL 0)
+    set(_GIT_TAG "")
+  endif()
+
   # --- Compute "extra" (priority 1..5)
   if(DEFINED WREN_VERSION_EXTRA AND NOT WREN_VERSION_EXTRA STREQUAL "")
     set(_EXTRA "${WREN_VERSION_EXTRA}")
@@ -119,8 +131,21 @@ function(wren_extract_version)
     set(_EXTRA_SUFFIX "-${_EXTRA}")
   endif()
 
-  # always include build so it never renders as "+.g<sha>"
-  set(_VERSION_STR "${_BASE}${_EXTRA_SUFFIX}+${_BUILD}.g${_GIT_SHA}")
+  # Omit build metadata when build is 0 on a tagged commit or master/main
+  # to produce a clean release version string (e.g. "1.2.0").
+  set(_ON_RELEASE_REF FALSE)
+  if(_GIT_BRANCH STREQUAL "master" OR _GIT_BRANCH STREQUAL "main")
+    set(_ON_RELEASE_REF TRUE)
+  endif()
+  if(NOT _GIT_TAG STREQUAL "")
+    set(_ON_RELEASE_REF TRUE)
+  endif()
+
+  if(_BUILD EQUAL 0 AND _ON_RELEASE_REF)
+    set(_VERSION_STR "${_BASE}${_EXTRA_SUFFIX}")
+  else()
+    set(_VERSION_STR "${_BASE}${_EXTRA_SUFFIX}+${_BUILD}.g${_GIT_SHA}")
+  endif()
 
   # --- Export variables to caller
   set(WREN_VERSION_MAJOR "${_MAJ}" PARENT_SCOPE)
@@ -132,6 +157,7 @@ function(wren_extract_version)
   set(WREN_VERSION_BUILD "${_BUILD}" PARENT_SCOPE)
   set(WREN_GIT_BRANCH "${_GIT_BRANCH}" PARENT_SCOPE)
   set(WREN_GIT_COMMIT "${_GIT_SHA}" PARENT_SCOPE)
+  set(WREN_GIT_TAG    "${_GIT_TAG}" PARENT_SCOPE)
 
   # --- Persist new state JSON
   set(_STATE_TPL [=[
