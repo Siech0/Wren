@@ -120,7 +120,7 @@ The root `CMakeLists.txt` calls `wren_extract_version()` **before** the
    and commit SHA are all unchanged. It resets to `0` whenever any of those
    change.
 1. **Composes** the full version string. When the build counter is `0`
-   **and** HEAD is on a tag or the `master`/`main` branch, the build
+   **and** HEAD is on a tag or the `master` branch, the build
    metadata suffix (`+BUILD.gCOMMIT`) is omitted to produce a clean release
    version.
 1. **Generates** a C++ header (`wren/version.hpp`) and persists the state
@@ -133,7 +133,7 @@ label automatically:
 
 | Branch             | Label              | Example string                       |
 | ------------------ | ------------------ | ------------------------------------ |
-| `master` / `main`  | *(none)*           | `1.0.0`                              |
+| `master`           | *(none)*           | `1.0.0`                              |
 | `develop`          | `dev`              | `1.1.0-dev+3.g9876fed`               |
 | `feature/mesh-lod` | `feature-mesh-lod` | `1.1.0-feature-mesh-lod+0.gdeadbeef` |
 | `bugfix/fix-crash` | `bugfix-fix-crash` | `1.0.1-bugfix-fix-crash+0.gcafe123`  |
