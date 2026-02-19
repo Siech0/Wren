@@ -17,7 +17,7 @@ MAJOR.MINOR.PATCH[-EXTRA][+BUILD.gCOMMIT]
 
 The build metadata suffix (`+BUILD.gCOMMIT`) is included for development
 builds to distinguish otherwise identical version numbers. It is **omitted**
-when the build counter is `0` and HEAD is on a tag or the `master`/`main`
+when the build counter is `0` and HEAD is on a tag or the `master`
 branch, producing a clean release string.
 
 For example:
@@ -112,6 +112,8 @@ The root `CMakeLists.txt` calls `wren_extract_version()` **before** the
 1. **Derives the pre-release label** using a priority chain:
    - The `WREN_VERSION_EXTRA` CMake variable (highest priority, e.g. from CI).
    - The `"extra"` field in `project.json`.
+   - If HEAD is exactly on a Git tag, the label is cleared (tagged commits
+     are treated as releases regardless of branch name).
    - An automatic label from the current Git branch (see below).
 1. **Manages a build counter** via a state file (`build/last_build.json`).
    The counter increments on each configure where the version, extra label,
