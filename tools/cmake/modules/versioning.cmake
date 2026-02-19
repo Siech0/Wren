@@ -73,7 +73,7 @@ function(wren_extract_version)
   else()
     if(_GIT_BRANCH STREQUAL "develop")
       set(_EXTRA "dev")
-    elseif(_GIT_BRANCH STREQUAL "master" OR _GIT_BRANCH STREQUAL "main")
+    elseif(_GIT_BRANCH STREQUAL "master")
       set(_EXTRA "")
     else()
       set(_EXTRA "${_GIT_BRANCH}")
@@ -134,10 +134,10 @@ function(wren_extract_version)
     set(_EXTRA_SUFFIX "-${_EXTRA}")
   endif()
 
-  # Omit build metadata when build is 0 on a tagged commit or master/main
+  # Omit build metadata when build is 0 on a tagged commit or master
   # to produce a clean release version string (e.g. "1.2.0").
   set(_ON_RELEASE_REF FALSE)
-  if(_GIT_BRANCH STREQUAL "master" OR _GIT_BRANCH STREQUAL "main")
+  if(_GIT_BRANCH STREQUAL "master")
     set(_ON_RELEASE_REF TRUE)
   endif()
   if(NOT _GIT_TAG STREQUAL "")
