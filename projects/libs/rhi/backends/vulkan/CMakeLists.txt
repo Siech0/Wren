@@ -1,10 +1,10 @@
 
 # Implemented at projects/libs/rhi/CMakeLists.txt
-# Creates wren_rhi_vulkan target.
+# Creates wren.rhi.vulkan target.
 wren_add_backend(vulkan)
 
 # Add source files and headers
-target_sources(wren_rhi_vulkan
+target_sources(wren.rhi.vulkan
     PRIVATE
       src/api.cpp
     PUBLIC

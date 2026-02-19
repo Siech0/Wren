@@ -1,0 +1,130 @@
+name: "Bug report"
+description: "Report a reproducible problem in the project"
+labels: ["bug"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+
+        Please fill out *every* required field. Clear, minimal reports help
+        maintainers spend more time fixing issues and less time guessing.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: "Pre-flight checklist"
+      description: "Please confirm all of the following:"
+      options:
+        - label: "I searched existing **issues** and **discussions** for a similar report."
+          required: true
+        - label: "I read the documentation / FAQ and couldn't find an answer."
+          required: true
+        - label: "I can reproduce this with the **latest** released version."
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Summary"
+      description: "Short description of the bug. What is broken, in one or two sentences?"
+      placeholder: "When I build with Clang 18 in Debug mode, `foo()` crashes when given an empty vector."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to reproduce"
+      description: "List the steps needed to see the problem. Be as precise as you can."
+      placeholder: |
+        1. Build the project: cmake --workflow dev-msvc
+        2. Run the project with --enable-foo
+        3. Observe crash / incorrect output
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_actual
+    attributes:
+      label: "Expected behavior vs actual behavior"
+      description: "Describe what you expected to happen, and what actually happened."
+      placeholder: |
+        **Expected:**
+        - Program exits with status 0
+
+        **Actual:**
+        - Program terminates with an assertion failure.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Error messages / logs"
+      description: "Compiler diagnostics, stack traces, sanitizer output, etc."
+      render: shell
+      placeholder: |
+        /path/to/file.cpp:42:17: error: no matching function for call to '...'
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: "Library / project version"
+      description: |
+        Exact version or git commit. If packaged, include the package name and version.
+      placeholder: "v1.2.3, or commit 0123abcd, or distro package name"
+    validations:
+      required: true
+
+  - type: input
+    id: compiler
+    attributes:
+      label: "Compiler"
+      description: "Compiler name and version."
+      placeholder: "GCC 14.1, Clang 18.0.1, MSVC 19.40, etc."
+    validations:
+      required: true
+
+  - type: input
+    id: cpp_standard
+    attributes:
+      label: "C++ standard"
+      description: "Which C++ standard are you compiling with?"
+      placeholder: "e.g. C++17, C++20, C++23"
+    validations:
+      required: true
+
+  - type: input
+    id: cmake
+    attributes:
+      label: "CMake version"
+      description: "Which version of cmake are you using?"
+      placeholder: "e.g cmake version 4.2.2"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: "Operating system"
+      description: "You can select more than one if relevant."
+      multiple: true
+      options:
+        - "Linux"
+        - "Windows"
+        - "macOS"
+        - "Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: env_details
+    attributes:
+      label: "Environment details"
+      description: "Distro / OS version, CPU arch, build type, relevant third-party libs, etc."
+      placeholder: |
+        Ubuntu 24.04, x86_64, Debug build, libstdc++ from GCC 14, linked with Boost 1.85.

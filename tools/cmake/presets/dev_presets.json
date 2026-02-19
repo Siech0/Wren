@@ -11,7 +11,12 @@
     {
       "name": "default-msvc",
       "description": "Development configure presets for windows",
-      "inherits": ["build-defaults", "vcpkg", "win64"]
+      "inherits": ["build-defaults", "vcpkg", "win64"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "dev-msvc",
@@ -21,12 +26,22 @@
         "CMAKE_C_COMPILER": "clang-cl",
         "CMAKE_CXX_COMPILER": "clang-cl"
       },
-      "inherits": ["build-defaults", "vcpkg", "win64", "docs"]
+      "inherits": ["build-defaults", "vcpkg", "win64", "docs"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "analysis-msvc",
       "description": "All configure presets for windows, including static analysis tooling",
-      "inherits": ["dev-msvc", "cppcheck", "clang-tidy-msvc"]
+      "inherits": ["dev-msvc", "cppcheck", "clang-tidy-msvc"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "full-dev-msvc",
@@ -34,12 +49,22 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "win64", "docs"]
+      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "win64", "docs"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "default-unix",
       "description": "Development configure presets for unix",
-      "inherits": ["build-defaults", "vcpkg", "unix"]
+      "inherits": ["build-defaults", "vcpkg", "unix"],
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "dev-unix",
@@ -47,12 +72,22 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "inherits": ["build-defaults", "vcpkg", "docs", "warnings-unix"]
+      "inherits": ["build-defaults", "vcpkg", "unix", "docs"],
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "analysis-unix",
       "description": "All configure presets for unix, including static analysis tooling",
-      "inherits": ["dev-unix", "clang-tidy", "cppcheck"]
+      "inherits": ["dev-unix", "clang-tidy", "cppcheck"],
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "full-dev-unix",
@@ -60,7 +95,12 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "docs", "warnings-unix"]
+      "inherits": ["build-defaults", "vcpkg", "tests", "benchmarks", "unix", "docs"],
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     }
   ]
 }

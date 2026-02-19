@@ -28,6 +28,11 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Sanitize",
         "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=address,undefined -fno-omit-frame-pointer -fno-common"
+      },
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -38,6 +43,11 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "SanitizeThreads",
         "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=thread -fno-omit-frame-pointer -fno-common"
+      },
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -48,12 +58,22 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "SanitizeMemory",
         "CMAKE_CXX_FLAGS_SANITIZE": "-O3 -g -fsanitize=memory -fno-omit-frame-pointer -fno-common"
+      },
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
       "name": "coverage",
       "description": "Coverage configure presets for unix",
-      "inherits": ["default-unix", "coverage-unix"]
+      "inherits": ["default-unix", "coverage-unix"],
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     }
   ]
 }

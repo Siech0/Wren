@@ -1,10 +1,10 @@
 
 # Implemented at projects/libs/rhi/CMakeLists.txt
-# Creates wren_rhi_opengl target.
+# Creates wren.rhi.opengl target.
 wren_add_backend(opengl)
 
 # Add source files and headers
-target_sources(wren_rhi_opengl
+target_sources(wren.rhi.opengl
     PRIVATE
       src/api.cpp
     PUBLIC

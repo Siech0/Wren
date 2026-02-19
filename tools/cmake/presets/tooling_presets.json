@@ -17,7 +17,12 @@
     {
       "name": "docs-unix",
       "description": "Continuous integration settings for document generation on MacOS + Ubuntu.",
-      "inherits": ["docs", "unix"]
+      "inherits": ["docs", "unix"],
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     }
   ]
 }

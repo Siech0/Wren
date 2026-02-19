@@ -8,8 +8,8 @@ add_subdirectory(api)
 
 function(wren_add_backend backend_name)
     # Prepare RHI backend target
-    # - Creates wren_rhi_<backend_name> target
-    # - Defines alias target wren::rhi_<backend_name>
+    # - Creates wren.rhi.<backend_name> target
+    # - Defines alias target wren::rhi.<backend_name>
     # - Sets up include directories and export headers
     # - Installs target and export headers
     # - Defines WREN_RHI_<BACKEND_NAME>_INCLUDEDIR and WREN_RHI_<BACKEND_NAME>_EXPORT_INCLUDEDIR variables
@@ -25,32 +25,32 @@ function(wren_add_backend backend_name)
 
     # Create library target
     if(WREN_BUILD_SHARED_BACKENDS)
-        add_library(wren_rhi_${backend_name_lc} SHARED)
+        add_library(wren.rhi.${backend_name_lc} SHARED)
     else()
-        add_library(wren_rhi_${backend_name_lc} STATIC)
+        add_library(wren.rhi.${backend_name_lc} STATIC)
     endif()
-    add_library(wren::rhi_${backend_name_lc} ALIAS wren_rhi_${backend_name_lc})
+    add_library(wren::rhi.${backend_name_lc} ALIAS wren.rhi.${backend_name_lc})
 
     # Prepare library target
-    target_link_libraries(wren_rhi_${backend_name_lc}
-        PUBLIC wren::rhi_api
+    target_link_libraries(wren.rhi.${backend_name_lc}
+        PUBLIC wren::rhi.api
     )
-    target_include_directories(wren_rhi_${backend_name_lc}
+    target_include_directories(wren.rhi.${backend_name_lc}
         PUBLIC
             $<INSTALL_INTERFACE:include>
             $<BUILD_INTERFACE:${WREN_RHI_${backend_name_uc}_INCLUDEDIR}>
             $<BUILD_INTERFACE:${WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR}>
     )
-    target_compile_features(wren_rhi_${backend_name_lc} PUBLIC cxx_std_23)
+    target_compile_features(wren.rhi.${backend_name_lc} PUBLIC cxx_std_23)
 
     # Set visibility and shared object information
-    set_target_properties(wren_rhi_${backend_name_lc}
+    set_target_properties(wren.rhi.${backend_name_lc}
       PROPERTIES
         CXX_VISIBILITY_PRESET hidden
         VISIBILITY_INLINES_HIDDEN YES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
-        EXPORT_NAME rhi_${backend_name_lc}
+        EXPORT_NAME rhi.${backend_name_lc}
         OUTPUT_NAME "wren_rhi_${backend_name_lc}"
         DEBUG_POSTFIX "d"
         BUILD_RPATH "$ORIGIN"
@@ -62,11 +62,11 @@ function(wren_add_backend backend_name)
     # Prepare export headers
     include(GenerateExportHeader)
     file(MAKE_DIRECTORY ${WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR}/wren/rhi/${backend_name_lc}) # Ensure directory exists
-    generate_export_header(wren_rhi_${backend_name_lc}
+    generate_export_header(wren.rhi.${backend_name_lc}
         BASE_NAME WREN_RHI_${backend_name_uc}
         EXPORT_FILE_NAME ${WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR}/wren/rhi/${backend_name_lc}/export.hpp
     )
-    target_sources(wren_rhi_${backend_name_lc}
+    target_sources(wren.rhi.${backend_name_lc}
         PUBLIC
             FILE_SET HEADERS BASE_DIRS "${WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR}" FILES
                 "${WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR}/wren/rhi/${backend_name_lc}/export.hpp"
@@ -76,11 +76,11 @@ function(wren_add_backend backend_name)
     include(GNUInstallDirs)
     include(CMakePackageConfigHelpers)
     # Install library target
-    install(TARGETS wren_rhi_${backend_name_lc}
+    install(TARGETS wren.rhi.${backend_name_lc}
         EXPORT wren_rhi_targets
         COMPONENT runtime
     )
-    install(TARGETS wren_rhi_${backend_name_lc}
+    install(TARGETS wren.rhi.${backend_name_lc}
         EXPORT wren_rhi_targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime

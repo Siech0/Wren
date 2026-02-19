@@ -397,6 +397,36 @@ enum class DeviceFlag : uint32_t {
 };
 template<> struct enable_flags<DeviceFlag> : std::true_type {};
 
+// -------------------------------------------------------------------------------------------------
+// Device creation descriptor
+//
+// nativeWindowHandle     → window/view handle when you intend to present;
+//                          leave null for headless devices.
+// preferredAdapterIndex  → hint for multi-GPU systems (0 = default).
+// flags                  → see DeviceFlag.
+// featureRequest         → required/preferred feature negotiation.
+//
+// Platform notes:
+//   - Vulkan: window handle is used by the platform layer (e.g., GLFW) to pick a surface.
+//   - OpenGL: window handle (or a GLFW handle) is used to create the GL context.
+//   - D3D12: used to create a swapchain (IDXGISwapChain*) if presenting.
+//   - Metal: maps to CAMetalLayer hosting when presenting.
+// -------------------------------------------------------------------------------------------------
+struct DeviceDesc {
+  void*     nativeWindowHandle   = nullptr;   // HWND / NSView* / GLFWwindow* / etc.
+  uint32_t  preferredAdapterIndex = 0;
+  DeviceFlag flags               = DeviceFlag::None;
+
+  DeviceFeatureRequest featureRequest{};
+};
+
+
+// -------------------------------------------------------------------------------------------------
+// Utilities
+// -------------------------------------------------------------------------------------------------
+
+
+
 
 } // namespace wren::rhi
 

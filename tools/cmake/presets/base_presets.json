@@ -30,8 +30,7 @@
       "hidden": true,
       "inherits": ["strict-std23", "cmake-gen-ninja", "build-dirs"],
       "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_BUILD_TYPE": "ON"
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     }
   ]

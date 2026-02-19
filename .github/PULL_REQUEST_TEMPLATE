@@ -1,0 +1,84 @@
+## Summary
+
+Describe the change in a couple of sentences.
+
+- What does this PR do for **wren**?
+- Why is it needed now?
+
+---
+
+## Type of change
+
+Select one or more:
+
+- [ ] Bug fix (non-breaking)
+- [ ] New feature
+- [ ] Breaking change
+- [ ] Performance improvement
+- [ ] Documentation / comments
+- [ ] Build / CI / tooling
+- [ ] Refactor / cleanup
+
+---
+
+## Related issues / discussions
+
+Link related issues or discussions, e.g.:
+
+- Fixes #123
+- Related to #456
+- Discussed in https://github.com/siech0/wren/discussions/999999
+
+---
+
+## Details
+
+### 1. Implementation notes
+
+Explain the high-level approach:
+
+- Key data structures and algorithms
+- Any trade-offs or constraints (e.g. GPU memory vs CPU time)
+- How this fits into wren’s architecture (renderer, engine, toolkit layers)
+
+### 2. Rendering / engine impact
+
+- Affected systems:
+  - [ ] Core renderer
+  - [ ] Scene / resource system
+  - [ ] Shaders / materials
+  - [ ] Tooling / samples
+  - [ ] Other: …
+
+- Affected backends:
+  - [ ] Vulkan
+  - [ ] Direct3D 12
+  - [ ] Metal
+  - [ ] OpenGL
+
+- Visual / behavioral changes:
+  - [ ] Output should be identical
+  - [ ] Output intentionally changes
+  - [ ] Only performance / memory should change
+
+If output changes, briefly describe expectations (screenshots are welcome).
+
+---
+
+## Testing
+
+Describe how you tested this change.
+
+- [ ] Built wren in **Debug**
+- [ ] Built wren in **Release**
+- [ ] All existing tests pass
+- [ ] Added or updated tests
+
+Details:
+
+```text
+Commands used:
+- cmake -S . -B build -DCMAKE_BUILD_TYPE=...
+- ctest --output-on-failure
+Other relevant steps:
+- ...

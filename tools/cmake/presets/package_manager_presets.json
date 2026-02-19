@@ -6,9 +6,7 @@
       "description": "Use vcpkg package manager.",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-llvm",
-        "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/tools/cmake/triplets"
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
       }
     },
     {

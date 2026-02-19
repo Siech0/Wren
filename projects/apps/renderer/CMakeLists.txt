@@ -1,14 +1,14 @@
 find_package(glfw3)
 
-add_executable(wren_renderer "src/main.cpp")
-add_executable(wren::renderer ALIAS wren_renderer)
+add_executable(wren.renderer "src/main.cpp")
+add_executable(wren::renderer ALIAS wren.renderer)
 
-target_compile_features(wren_renderer PRIVATE cxx_std_23)
+target_compile_features(wren.renderer PRIVATE cxx_std_23)
 
 # Dependency setup
 find_package(glm REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
-target_link_libraries(wren_renderer
+target_link_libraries(wren.renderer
     PRIVATE
         glm::glm
         glfw
@@ -18,7 +18,7 @@ target_link_libraries(wren_renderer
 )
 
 # Installation
-install(TARGETS wren_renderer
+install(TARGETS wren.renderer
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
     COMPONENT applications
 )
