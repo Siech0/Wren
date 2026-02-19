@@ -215,8 +215,7 @@ ______________________________________________________________________
 
 ## Git Workflow and Branching Strategy
 
-Wren follows a simplified **Git Flow** model suited for open-source projects
-with a small-to-medium contributor base.
+Wren follows a simplified **Git Flow** model.
 
 ### Branch Roles
 
@@ -342,7 +341,7 @@ docs: update versioning documentation
 
 - **Keep `master` releasable.** Every commit on `master` must build, pass
   tests, and correspond to a tagged release.
-- **Keep `develop` green.** Broken builds on `develop` block the entire team.
+- **Keep `develop` green.** Broken builds on `develop` block everybody.
   Fix or revert immediately.
 - **Rebase feature branches** onto `develop` before merging to maintain a
   linear, readable history.
