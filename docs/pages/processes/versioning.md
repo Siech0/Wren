@@ -3,8 +3,8 @@
 ## Overview
 
 Wren uses [Semantic Versioning 2.0.0](https://semver.org/) as the foundation
-for all release numbering. A single source of truth — `project.json` in the
-repository root — declares the current version. The CMake build system reads
+for all release numbering. A single source of truth, `project.json` in the
+repository root, declares the current version. The CMake build system reads
 that file, enriches it with Git metadata and a local build counter, then
 propagates the result to every artifact that needs it: C++ headers, CMake
 targets, install packages, and CI logs.
@@ -50,10 +50,10 @@ considered stable. Minor version bumps may contain breaking changes.
 The optional `EXTRA` segment marks a version as pre-release. Pre-release
 versions have lower precedence than the associated normal version:
 
-- `alpha` — feature-incomplete, may be unstable.
-- `beta` — feature-complete, undergoing wider testing.
-- `rc.N` — release candidate N, expected to ship unless blockers surface.
-- `dev` — automatic label applied on the `develop` branch.
+- `alpha`: feature-incomplete, may be unstable.
+- `beta`: feature-complete, undergoing wider testing.
+- `rc.N`: release candidate N, expected to ship unless blockers surface.
+- `dev`: automatic label applied on the `develop` branch.
 
 ______________________________________________________________________
 
@@ -152,7 +152,7 @@ in the calling scope:
 | `WREN_VERSION_MINOR`  | `2`                    | Minor component.                                                        |
 | `WREN_VERSION_PATCH`  | `0`                    | Patch component.                                                        |
 | `WREN_VERSION_EXTRA`  | `dev`                  | Pre-release label (may be empty).                                       |
-| `WREN_VERSION`        | `1.2.0`                | `MAJOR.MINOR.PATCH` — used by `project(VERSION)`.                       |
+| `WREN_VERSION`        | `1.2.0`                | `MAJOR.MINOR.PATCH`; used by `project(VERSION)`.                        |
 | `WREN_VERSION_STRING` | `1.2.0-dev+3.ga1b2c3d` | Full SemVer string with metadata (metadata omitted for clean releases). |
 | `WREN_VERSION_BUILD`  | `3`                    | Local build counter.                                                    |
 | `WREN_GIT_BRANCH`     | `develop`              | Current Git branch.                                                     |
@@ -181,7 +181,7 @@ include path for this header.
 ### Build State File
 
 The file `build/last_build.json` tracks the version and commit from the
-previous configure. It is a build artifact — **never commit it** to version
+previous configure. It is a build artifact; **never commit it** to version
 control. Its schema:
 
 ```json
@@ -266,7 +266,7 @@ and CI.
    git checkout -b release/1.2.0
    ```
 1. Update `project.json` to set the release version (remove any `"extra"`).
-1. Fix release-blocking issues only — no new features.
+1. Fix release-blocking issues only; no new features.
 1. Merge into `master` **and** back into `develop`:
    ```bash
    git checkout master

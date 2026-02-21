@@ -317,42 +317,42 @@ template<> struct wren::foundation::enable_flags<Feature> : std::true_type {};
 // -------------------------------------------------------------------------------------------------
 struct DeviceLimits {
   // Textures & images
-  uint32_t maxImageDimension1D = 16384;
-  uint32_t maxImageDimension2D = 16384;
-  uint32_t maxImageDimension3D = 2048;
-  uint32_t maxCubeDimension    = 16384;
-  uint32_t maxMipLevels        = 15;
-  uint32_t maxArrayLayers      = 2048;
+  uint32_t maxImageDimension1D;
+  uint32_t maxImageDimension2D;
+  uint32_t maxImageDimension3D;
+  uint32_t maxCubeDimension;
+  uint32_t maxMipLevels;
+  uint32_t maxArrayLayers;
 
   // Samplers & descriptors per stage (approx. across APIs)
-  uint32_t maxPerStageSamplers        = 16;
-  uint32_t maxPerStageSampledImages   = 128;
-  uint32_t maxPerStageStorageImages   = 8;
-  uint32_t maxPerStageUniformBuffers  = 12;
-  uint32_t maxPerStageStorageBuffers  = 8;
+  uint32_t maxPerStageSamplers;
+  uint32_t maxPerStageSampledImages;
+  uint32_t maxPerStageStorageImages;
+  uint32_t maxPerStageUniformBuffers;
+  uint32_t maxPerStageStorageBuffers;
 
   // Attachments
-  uint32_t maxColorAttachments = 8;
+  uint32_t maxColorAttachments;
 
   // Vertex I/O
-  uint32_t maxVertexInputBindings   = 16;
-  uint32_t maxVertexInputAttributes = 16;
+  uint32_t maxVertexInputBindings;
+  uint32_t maxVertexInputAttributes;
 
   // MSAA
-  uint32_t maxMSAASamples = 8; // query per-format in native APIs
+  uint32_t maxMSAASamples; // query per-format in native APIs
 
   // Alignment constraints (bytes)
-  uint32_t uniformBufferAlignment = 256;  // D3D12 CBV: 256; Vulkan often 256; GL typically 256 or 64 depending on impl
-  uint32_t storageBufferAlignment = 256;  // varies; choose conservative
+  uint32_t uniformBufferAlignment; // D3D12 CBV: 256; Vulkan often 256; GL typically 256 or 64 depending on impl
+  uint32_t storageBufferAlignment; // varies; choose conservative
 
   // Compute
-  uint32_t maxComputeWorkGroupSizeX = 1024;
-  uint32_t maxComputeWorkGroupSizeY = 1024;
-  uint32_t maxComputeWorkGroupSizeZ = 64;
-  uint32_t maxComputeWorkGroupInvocations = 1024;
+  uint32_t maxComputeWorkGroupSizeX;
+  uint32_t maxComputeWorkGroupSizeY;
+  uint32_t maxComputeWorkGroupSizeZ;
+  uint32_t maxComputeWorkGroupInvocations;
 
   // Timeline counter granularity (if emulated, this is 1)
-  uint64_t timelineTickFrequency = 1;
+  uint64_t timelineTickFrequency;
 };
 
 // -------------------------------------------------------------------------------------------------
@@ -413,18 +413,16 @@ template<> struct enable_flags<DeviceFlag> : std::true_type {};
 //   - Metal: maps to CAMetalLayer hosting when presenting.
 // -------------------------------------------------------------------------------------------------
 struct DeviceDesc {
-  void*     nativeWindowHandle   = nullptr;   // HWND / NSView* / GLFWwindow* / etc.
-  uint32_t  preferredAdapterIndex = 0;
-  DeviceFlag flags               = DeviceFlag::None;
-
-  DeviceFeatureRequest featureRequest{};
+    void*              nativeWindowHandle    = nullptr;
+    uint32_t           preferredAdapterIndex = 0;
+    DeviceFlag         flags                 = DeviceFlag::None;
+    DeviceFeatureRequest featureRequest{};
 };
 
 
 // -------------------------------------------------------------------------------------------------
 // Utilities
 // -------------------------------------------------------------------------------------------------
-
 
 
 

@@ -1,9 +1,10 @@
 
-option(WREN_BUILD_OPENGL_BACKEND "Build the OpenGL backend for the RHI library" OFF) # Not implemented
-option(WREN_BUILD_VULKAN_BACKEND "Build the Vulkan backend for the RHI library" OFF) # Not implemented
+option(WREN_BUILD_OPENGL_BACKEND "Build the OpenGL backend for the RHI library" ON)
+option(WREN_BUILD_VULKAN_BACKEND "Build the Vulkan backend for the RHI library" ON)
 option(WREN_BUILD_SHARED_BACKENDS "Build RHI backends as shared libraries" ON)
 
 add_subdirectory(api)
+add_subdirectory(loader)
 
 
 function(wren_add_backend backend_name)
@@ -20,8 +21,12 @@ function(wren_add_backend backend_name)
     string(TOLOWER ${backend_name} backend_name_lc)
     string(TOUPPER ${backend_name} backend_name_uc)
 
-    set(WREN_RHI_${backend_name_uc}_INCLUDEDIR "${CMAKE_CURRENT_LIST_DIR}/${backend_name_lc}/include")
+    set(WREN_RHI_${backend_name_uc}_INCLUDEDIR "${CMAKE_CURRENT_LIST_DIR}/include")
     set(WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR "${CMAKE_CURRENT_BINARY_DIR}/${backend_name_lc}/include")
+
+    # Propagate to the calling scope so backend CMakeLists can reference them
+    set(WREN_RHI_${backend_name_uc}_INCLUDEDIR "${CMAKE_CURRENT_LIST_DIR}/include" PARENT_SCOPE)
+    set(WREN_RHI_${backend_name_uc}_EXPORT_INCLUDEDIR "${CMAKE_CURRENT_BINARY_DIR}/${backend_name_lc}/include" PARENT_SCOPE)
 
     # Create library target
     if(WREN_BUILD_SHARED_BACKENDS)
@@ -75,11 +80,6 @@ function(wren_add_backend backend_name)
     # Install targets
     include(GNUInstallDirs)
     include(CMakePackageConfigHelpers)
-    # Install library target
-    install(TARGETS wren.rhi.${backend_name_lc}
-        EXPORT wren_rhi_targets
-        COMPONENT runtime
-    )
     install(TARGETS wren.rhi.${backend_name_lc}
         EXPORT wren_rhi_targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime

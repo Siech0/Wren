@@ -8,6 +8,6 @@ target_sources(wren.rhi.vulkan
     PRIVATE
       src/api.cpp
     PUBLIC
-        FILE_SET HEADERS FILES
+        FILE_SET HEADERS BASE_DIRS "${WREN_RHI_VULKAN_INCLUDEDIR}" FILES
             "${WREN_RHI_VULKAN_INCLUDEDIR}/wren/rhi/vulkan/api.h"
 )

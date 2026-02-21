@@ -321,21 +321,6 @@ enum class TextureFormat : std::uint16_t {
     D32S8,               // VK_FORMAT_D32_SFLOAT_S8_UINT    | GL_DEPTH32F_STENCIL8 | DXGI_FORMAT_D32_FLOAT_S8X24_UINT  | MTLPixelFormatDepth32Float_Stencil8
 };
 
-// Utilities
-[[nodiscard]] inline const char* to_string(Status s) {
-  switch (s) {
-    case Status::Ok:                     return "Ok";
-    case Status::MissingRequiredFeature: return "MissingRequiredFeature";
-    case Status::UnsupportedFormat:      return "UnsupportedFormat";
-    case Status::UnsupportedSampleCount: return "UnsupportedSampleCount";
-    case Status::UnsupportedQueueType:   return "UnsupportedQueueType";
-    case Status::UnsupportedLimit:       return "UnsupportedLimit";
-    case Status::OutOfMemory:            return "OutOfMemory";
-    case Status::InvalidArgument:        return "InvalidArgument";
-    default:                             return "InternalError";
-  }
-}
-
 [[nodiscard]] inline const char *to_string(Backend b) {
   switch (b) {
     case Backend::OpenGL: return "OpenGL";

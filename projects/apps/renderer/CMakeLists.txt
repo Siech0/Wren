@@ -15,6 +15,7 @@ target_link_libraries(wren.renderer
         wren::foundation
         wren::platform
         wren::version_info
+        wren::rhi.loader
 )
 
 # Installation

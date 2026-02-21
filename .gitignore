@@ -70,6 +70,7 @@ graph_info.json
 cmakedeps_macros.cmake
 
 # VCPKG
+vcpkg_installed
 .vcpkg_installed/
 .cache
 

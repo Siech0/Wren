@@ -8,6 +8,6 @@ target_sources(wren.rhi.opengl
     PRIVATE
       src/api.cpp
     PUBLIC
-        FILE_SET HEADERS FILES
+        FILE_SET HEADERS BASE_DIRS "${WREN_RHI_OPENGL_INCLUDEDIR}" FILES
             "${WREN_RHI_OPENGL_INCLUDEDIR}/wren/rhi/opengl/api.h"
 )

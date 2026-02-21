@@ -18,6 +18,7 @@ target_sources(wren.rhi.api INTERFACE
             "${WREN_RHI_API_INCLUDEDIR}/wren/rhi/api/api.hpp"
             "${WREN_RHI_API_INCLUDEDIR}/wren/rhi/api/features.hpp"
             "${WREN_RHI_API_INCLUDEDIR}/wren/rhi/api/enums.hpp"
+            "${WREN_RHI_API_INCLUDEDIR}/wren/rhi/backend.h"
 )
 target_link_libraries(wren.rhi.api INTERFACE wren::foundation)
 
