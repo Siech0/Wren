@@ -1,4 +1,4 @@
-#ifndef WREN_RHI_API_FEATURES_HPP
+﻿#ifndef WREN_RHI_API_FEATURES_HPP
 #define WREN_RHI_API_FEATURES_HPP
 
 #include <type_traits>
@@ -78,7 +78,7 @@ enum class Feature : std::uint64_t {
     //   https://registry.khronos.org/vulkan/specs/latest/man/html/VK_EXT_descriptor_indexing.html
     // OpenGL: ARB_bindless_texture (handle residency)
     //   https://registry.khronos.org/OpenGL/extensions/ARB/ARB_bindless_texture.txt
-    // D3D12: Descriptor heaps + Resource Binding Tiers 1–3
+    // D3D12: Descriptor heaps + Resource Binding Tiers 1-3
     //   https://microsoft.github.io/DirectX-Specs/d3d/ResourceBinding.html
     // Metal: Argument Buffers / Argument Tables
     //   https://developer.apple.com/documentation/metal/improving-cpu-performance-by-using-argument-buffers
@@ -145,7 +145,7 @@ enum class Feature : std::uint64_t {
     // Vulkan: VK_KHR_fragment_shading_rate
     //   https://docs.vulkan.org/samples/latest/samples/extensions/fragment_shading_rate_dynamic/README.html
     // OpenGL: NV_shading_rate_image (vendor)
-    // D3D12: VRS (Options6 / Tier 1–3)
+    // D3D12: VRS (Options6 / Tier 1-3)
     //   https://learn.microsoft.com/windows/win32/direct3d12/vrs
     // Metal: Rasterization Rate Maps (tile shading)
     //   https://developer.apple.com/documentation/metal/rasterization_rate_maps
@@ -154,7 +154,7 @@ enum class Feature : std::uint64_t {
     // Vulkan: VK_EXT_conservative_rasterization
     //   https://registry.khronos.org/vulkan/specs/latest/man/html/VK_EXT_conservative_rasterization.html
     // OpenGL: NV_conservative_raster
-    // D3D12: ConservativeRasterizationTier (1–3)
+    // D3D12: ConservativeRasterizationTier (1-3)
     //   https://learn.microsoft.com/windows/win32/api/d3d12/ne-d3d12-d3d12_conservative_rasterization_tier
     // Metal: not directly; some hardware-specific approximations
 
@@ -306,7 +306,7 @@ template<> struct wren::foundation::enable_flags<Feature> : std::true_type {};
 
 // -------------------------------------------------------------------------------------------------
 // Device limits
-//  - A curated subset of limits you’ll routinely validate at object creation.
+//  - A curated subset of limits youâ€™ll routinely validate at object creation.
 //  - Backends fill this from the native API once (e.g., VkPhysicalDeviceLimits / D3D12 feature queries / Metal feature sets / GL queries).
 //
 //  References:
@@ -370,11 +370,11 @@ struct Capabilities {
 // Device feature negotiation
 //
 // Request model:
-//   - 'required'  → must be present or creation fails (e.g., MeshShaders for a tool).
-//   - 'preferred' → nice-to-have; backend proceeds with fallbacks if missing.
+//   - 'required'  -> must be present or creation fails (e.g., MeshShaders for a tool).
+//   - 'preferred' -> nice-to-have; backend proceeds with fallbacks if missing.
 // Backend must:
 //   - Probe once, fill Capabilities.
-//   - If (required ∧ !supported) → return MissingRequiredFeature with a helpful message.
+//   - If (required && !supported) -> return MissingRequiredFeature with a helpful message.
 //   - Otherwise succeed and log which preferred features were downgraded.
 // -------------------------------------------------------------------------------------------------
 struct DeviceFeatureRequest {
@@ -385,9 +385,9 @@ struct DeviceFeatureRequest {
 // -------------------------------------------------------------------------------------------------
 // Common device flags (debug, headless, etc.)
 //
-// Debug       → request validation layers / KHR_debug / D3D12 debug / Metal validation
-// Headless    → no swapchain / presentation (use offscreen targets)
-// HighPriority→ hint for high-priority queue if platform supports it
+// Debug       -> request validation layers / KHR_debug / D3D12 debug / Metal validation
+// Headless    -> no swapchain / presentation (use offscreen targets)
+// HighPriority-> hint for high-priority queue if platform supports it
 // -------------------------------------------------------------------------------------------------
 enum class DeviceFlag : uint32_t {
   None         = 0,
@@ -400,11 +400,11 @@ template<> struct enable_flags<DeviceFlag> : std::true_type {};
 // -------------------------------------------------------------------------------------------------
 // Device creation descriptor
 //
-// nativeWindowHandle     → window/view handle when you intend to present;
+// nativeWindowHandle     -> window/view handle when you intend to present;
 //                          leave null for headless devices.
-// preferredAdapterIndex  → hint for multi-GPU systems (0 = default).
-// flags                  → see DeviceFlag.
-// featureRequest         → required/preferred feature negotiation.
+// preferredAdapterIndex  -> hint for multi-GPU systems (0 = default).
+// flags                  -> see DeviceFlag.
+// featureRequest         -> required/preferred feature negotiation.
 //
 // Platform notes:
 //   - Vulkan: window handle is used by the platform layer (e.g., GLFW) to pick a surface.
