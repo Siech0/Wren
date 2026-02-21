@@ -35,7 +35,7 @@ enum class QueueType : std::uint8_t {
 
 // ===================================================================================
 // Shader stages (bitmask)
-//   VK: VkShaderStageFlagBits — https://vulkan.lunarg.com/doc/view/latest/spec/chapters/shaders.html
+//   VK: VkShaderStageFlagBits — https://docs.vulkan.org/refpages/latest/refpages/source/VkShaderStageFlagBits.html
 //   GL: classic stages; mesh via NV/EXT extensions
 //       https://registry.khronos.org/OpenGL/extensions/EXT/EXT_mesh_shader.txt
 //   D3D12: classic + Mesh/Amplification — https://microsoft.github.io/DirectX-Specs/d3d/MeshShader.html
@@ -64,7 +64,7 @@ template<> struct wren::foundation::enable_flags<ShaderStage> : std::true_type {
 
 // ===================================================================================
 // Primitive Topology
-//   VK: VkPrimitiveTopology — https://registry.khronos.org/vulkan/specs/latest/man/html/VkPrimitiveTopology.html
+//   VK: VkPrimitiveTopology — https://docs.vulkan.org/refpages/latest/refpages/source/VkPrimitiveTopology.html
 //   GL: glDraw* mode — https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawElements.xhtml
 //   D3D12: D3D_PRIMITIVE_TOPOLOGY — https://learn.microsoft.com/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_primitive_topology
 //   Metal: MTLPrimitiveType — https://developer.apple.com/documentation/metal/mtlprimitivetype
@@ -100,10 +100,10 @@ enum class FrontFace : std::uint8_t {
 
 // ===================================================================================
 // Multisample (MSAA) sample counts
-//   VK: VkSampleCountFlagBits — https://registry.khronos.org/vulkan/specs/latest/man/html/VkSampleCountFlagBits.html
+//   VK: VkSampleCountFlagBits — https://docs.vulkan.org/refpages/latest/refpages/source/VkSampleCountFlagBits.html
 //   GL: glRenderbufferStorageMultisample — https://registry.khronos.org/OpenGL-Refpages/gl4/html/glRenderbufferStorageMultisample.xhtml
-//   D3D12: D3D12_SAMPLE_DESC — https://microsoft.github.io/DirectX-Specs/d3d/WorkGraphs.html (subobject list references)
-//   Metal: render pipeline sampleCount — https://developer.apple.com/documentation/metal/mtlrenderpipelinedescriptor/samplecount
+//   D3D12: DXGI_SAMPLE_DESC — https://learn.microsoft.com/windows/win32/api/dxgicommon/ns-dxgicommon-dxgi_sample_desc
+//   Metal: render pipeline rasterSampleCount — https://developer.apple.com/documentation/metal/mtlrenderpipelinedescriptor/rastersamplecount
 // ===================================================================================
 enum class SampleCount : std::uint8_t {
     C1  = 1,  // VK_SAMPLE_COUNT_1_BIT | GL: default | D3D12: Count=1 | Metal: 1
@@ -134,8 +134,8 @@ enum class StencilOp : std::uint8_t {
     Keep,            // Keep existing value
     Zero,            // Write 0
     Replace,         // Write ref
-    IncrementClamp,  // VK: INCREMENT_AND_CLAMP | GL: INCR_WRAP? (Clamp is GL_INCR? see note) | D3D12: INCR_SAT | Metal: incrementClamp
-    DecrementClamp,  // VK: DECREMENT_AND_CLAMP | GL: DECR       | D3D12: DECR_SAT | Metal: decrementClamp
+    IncrementClamp,  // VK: INCREMENT_AND_CLAMP | GL: GL_INCR | D3D12: INCR_SAT | Metal: incrementClamp
+    DecrementClamp,  // VK: DECREMENT_AND_CLAMP | GL: GL_DECR | D3D12: DECR_SAT | Metal: decrementClamp
     Invert,          // Bitwise invert
     IncrementWrap,   // VK: INCREMENT_AND_WRAP | GL: INCR_WRAP | D3D12: INCR | Metal: incrementWrap
     DecrementWrap    // VK: DECREMENT_AND_WRAP | GL: DECR_WRAP | D3D12: DECR | Metal: decrementWrap
@@ -181,7 +181,7 @@ template<> struct wren::foundation::enable_flags<ColorWriteMask> : std::true_typ
 
 // ===================================================================================
 // Sampler state
-//   Filter: VkFilter/VkSamplerMipmapMode — https://registry.khronos.org/vulkan/specs/latest/man/html/VkSamplerMipmapMode.html
+//   Filter: VkFilter/VkSamplerMipmapMode — https://docs.vulkan.org/refpages/latest/refpages/source/VkSamplerMipmapMode.html
 //           GL: GL_TEXTURE_MIN/MAG_FILTER — https://registry.khronos.org/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
 //           D3D12_FILTER — https://learn.microsoft.com/windows/win32/api/d3d12/ne-d3d12-d3d12_filter
 //           Metal: MTLSamplerMinMagFilter/MipFilter — https://developer.apple.com/documentation/metal/mtlsamplerminmagfilter
@@ -190,7 +190,9 @@ template<> struct wren::foundation::enable_flags<ColorWriteMask> : std::true_typ
 //            D3D12_TEXTURE_ADDRESS_MODE — https://learn.microsoft.com/windows/win32/api/d3d12/ne-d3d12-d3d12_texture_address_mode
 //            MTLSamplerAddressMode — https://developer.apple.com/documentation/metal/mtlsampleraddressmode
 //   Border:  VkBorderColor — https://registry.khronos.org/vulkan/specs/latest/man/html/VkBorderColor.html
-//            GL: sampler border color param; D3D12: static border color in sampler desc; Metal: only with clampToBorderColor
+//            GL: GL_TEXTURE_BORDER_COLOR (arbitrary vec4 via glSamplerParameterfv — no discrete enum)
+//            D3D12_STATIC_BORDER_COLOR — https://learn.microsoft.com/windows/win32/api/d3d12/ne-d3d12-d3d12_static_border_color
+//            MTLSamplerBorderColor — https://developer.apple.com/documentation/metal/mtlsamplerbordercolor (iOS 14+, macOS 10.12+, tvOS 16+)
 // ===================================================================================
 enum class Filter : std::uint8_t { Nearest, Linear };
 enum class MipmapMode : std::uint8_t { Nearest, Linear };
@@ -200,13 +202,13 @@ enum class AddressMode : std::uint8_t {
     MirroredRepeat,     // VK_MIRRORED_REPEAT | GL_MIRRORED_REPEAT | D3D12_MIRROR | Metal: mirrorRepeat
     ClampToEdge,        // VK_CLAMP_TO_EDGE | GL_CLAMP_TO_EDGE | D3D12_CLAMP | Metal: clampToEdge
     ClampToBorder,      // VK_CLAMP_TO_BORDER | GL_CLAMP_TO_BORDER | D3D12_BORDER | Metal: clampToBorderColor (iOS 13+/macOS 10.12+)
-    MirrorClampToEdge   // VK_MIRROR_CLAMP_TO_EDGE (1.2) | GL_MIRROR_CLAMP_TO_EDGE | D3D12: no direct | Metal: n/a
+    MirrorClampToEdge   // VK_MIRROR_CLAMP_TO_EDGE (1.2) | GL_MIRROR_CLAMP_TO_EDGE | D3D12: MIRROR_ONCE | Metal: mirrorClampToEdge (macOS 10.11+, iOS 14+, tvOS 16+)
 };
 
 enum class BorderColor : std::uint8_t {
-    TransparentBlack,   // VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK / INT_...
-    OpaqueBlack,        // VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK
-    OpaqueWhite         // VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE
+    TransparentBlack,   // VK: VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK / INT_TRANSPARENT_BLACK | GL: {0,0,0,0} | D3D12: TRANSPARENT_BLACK | Metal: transparentBlack
+    OpaqueBlack,        // VK: VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK / INT_OPAQUE_BLACK         | GL: {0,0,0,1} | D3D12: OPAQUE_BLACK       | Metal: opaqueBlack
+    OpaqueWhite         // VK: VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE / INT_OPAQUE_WHITE         | GL: {1,1,1,1} | D3D12: OPAQUE_WHITE       | Metal: opaqueWhite
 };
 
 // ===================================================================================
@@ -217,95 +219,106 @@ enum class BorderColor : std::uint8_t {
 //   Metal: MTLVertexFormat — https://developer.apple.com/documentation/metal/mtlvertexformat
 // ===================================================================================
 enum class VertexFormat : std::uint16_t {
-    // Floats:
-    R32_Float,              // VK_FORMAT_R32_SFLOAT | GL: 1 x float | DXGI_FORMAT_R32_FLOAT | MTLVertexFormatFloat
-    RG32_Float,             // VK_FORMAT_R32G32_SFLOAT | GL: 2 x float | DXGI_FORMAT_R32G32_FLOAT | MTLVertexFormatFloat2
-    RGB32_Float,            // VK_FORMAT_R32G32B32_SFLOAT | GL: 3 x float | DXGI_FORMAT_R32G32B32_FLOAT | MTLVertexFormatFloat3
-    RGBA32_Float,           // VK_FORMAT_R32G32B32A32_SFLOAT | DXGI_FORMAT_R32G32B32A32_FLOAT | MTLVertexFormatFloat4
-    // Unorm 8-bit:
-    R8_UNorm,               // VK_FORMAT_R8_UNORM | GL: GL_UNSIGNED_BYTE normalized | DXGI_FORMAT_R8_UNORM | MTLUCharNormalized
-    RG8_UNorm,              // ...
-    RGBA8_UNorm,            // VK_FORMAT_R8G8B8A8_UNORM | GL_RGBA8 | DXGI_FORMAT_R8G8B8A8_UNORM | MTLVertexFormatUChar4Normalized
-    BGRA8_UNorm,            // VK_FORMAT_B8G8R8A8_UNORM | GL_BGRA + ext | DXGI_FORMAT_B8G8R8A8_UNORM | Metal: special-case (render target ok)
-    // Snorm 8-bit:
-    RGBA8_SNorm,            // VK_FORMAT_R8G8B8A8_SNORM | DXGI_FORMAT_R8G8B8A8_SNORM | MTLVertexFormatChar4Normalized
-    // Packed/special:
-    RGB10A2_UNorm,          // VK_FORMAT_A2B10G10R10_UNORM_PACK32 or *_A2B10G10R10 | GL: 10_10_10_2 | DXGI_FORMAT_R10G10B10A2_UNORM | MTL...
-    R11G11B10_Float,        // VK_FORMAT_B10G11R11_UFLOAT_PACK32 | GL: R11F_G11F_B10F | DXGI_FORMAT_R11G11B10_FLOAT | Metal: yes (pixel only)
-    // Int16/32 (signed/unsigned):
-    R16_UInt, RG16_UInt, RGBA16_UInt, // DXGI_FORMAT_R16_* | GL: USHORT attrib | VK: *_UINT
-    R32_UInt, RG32_UInt, RGBA32_UInt,
-    R32_SInt, RG32_SInt, RGBA32_SInt
+    // 32-bit floats:
+    R32_Float,              // VK_FORMAT_R32_SFLOAT          | GL: GL_FLOAT (x1)       | DXGI_FORMAT_R32_FLOAT          | MTLVertexFormatFloat
+    RG32_Float,             // VK_FORMAT_R32G32_SFLOAT       | GL: GL_FLOAT (x2)       | DXGI_FORMAT_R32G32_FLOAT       | MTLVertexFormatFloat2
+    RGB32_Float,            // VK_FORMAT_R32G32B32_SFLOAT    | GL: GL_FLOAT (x3)       | DXGI_FORMAT_R32G32B32_FLOAT    | MTLVertexFormatFloat3
+    RGBA32_Float,           // VK_FORMAT_R32G32B32A32_SFLOAT | GL: GL_FLOAT (x4)       | DXGI_FORMAT_R32G32B32A32_FLOAT | MTLVertexFormatFloat4
+    // UNorm 8-bit:
+    R8_UNorm,               // VK_FORMAT_R8_UNORM            | GL: GL_UNSIGNED_BYTE (n, x1) | DXGI_FORMAT_R8_UNORM            | MTLVertexFormatUCharNormalized
+    RG8_UNorm,              // VK_FORMAT_R8G8_UNORM          | GL: GL_UNSIGNED_BYTE (n, x2) | DXGI_FORMAT_R8G8_UNORM          | MTLVertexFormatUChar2Normalized
+    RGBA8_UNorm,            // VK_FORMAT_R8G8B8A8_UNORM      | GL: GL_UNSIGNED_BYTE (n, x4) | DXGI_FORMAT_R8G8B8A8_UNORM     | MTLVertexFormatUChar4Normalized
+    BGRA8_UNorm,            // VK_FORMAT_B8G8R8A8_UNORM      | GL: GL_UNSIGNED_BYTE BGRA ext | DXGI_FORMAT_B8G8R8A8_UNORM    | MTLVertexFormatUChar4Normalized_BGRA
+    // SNorm 8-bit:
+    RGBA8_SNorm,            // VK_FORMAT_R8G8B8A8_SNORM      | GL: GL_BYTE (n, x4)     | DXGI_FORMAT_R8G8B8A8_SNORM     | MTLVertexFormatChar4Normalized
+    // Packed:
+    RGB10A2_UNorm,          // VK_FORMAT_A2B10G10R10_UNORM_PACK32 | GL: GL_UNSIGNED_INT_2_10_10_10_REV (n) | DXGI_FORMAT_R10G10B10A2_UNORM | MTLVertexFormatUInt1010102Normalized
+    R11G11B10_Float,        // VK_FORMAT_B10G11R11_UFLOAT_PACK32  | GL: GL_UNSIGNED_INT_10F_11F_11F_REV    | DXGI_FORMAT_R11G11B10_FLOAT   | MTLVertexFormatFloatRG11B10
+    // UInt 16-bit:
+    R16_UInt,               // VK_FORMAT_R16_UINT            | GL: GL_UNSIGNED_SHORT (x1) | DXGI_FORMAT_R16_UINT           | MTLVertexFormatUShort
+    RG16_UInt,              // VK_FORMAT_R16G16_UINT         | GL: GL_UNSIGNED_SHORT (x2) | DXGI_FORMAT_R16G16_UINT        | MTLVertexFormatUShort2
+    RGBA16_UInt,            // VK_FORMAT_R16G16B16A16_UINT   | GL: GL_UNSIGNED_SHORT (x4) | DXGI_FORMAT_R16G16B16A16_UINT  | MTLVertexFormatUShort4
+    // UInt / SInt 32-bit:
+    R32_UInt,               // VK_FORMAT_R32_UINT            | GL: GL_UNSIGNED_INT (x1)   | DXGI_FORMAT_R32_UINT           | MTLVertexFormatUInt
+    RG32_UInt,              // VK_FORMAT_R32G32_UINT         | GL: GL_UNSIGNED_INT (x2)   | DXGI_FORMAT_R32G32_UINT        | MTLVertexFormatUInt2
+    RGBA32_UInt,            // VK_FORMAT_R32G32B32A32_UINT   | GL: GL_UNSIGNED_INT (x4)   | DXGI_FORMAT_R32G32B32A32_UINT  | MTLVertexFormatUInt4
+    R32_SInt,               // VK_FORMAT_R32_SINT            | GL: GL_INT (x1)            | DXGI_FORMAT_R32_SINT           | MTLVertexFormatInt
+    RG32_SInt,              // VK_FORMAT_R32G32_SINT         | GL: GL_INT (x2)            | DXGI_FORMAT_R32G32_SINT        | MTLVertexFormatInt2
+    RGBA32_SInt             // VK_FORMAT_R32G32B32A32_SINT   | GL: GL_INT (x4)            | DXGI_FORMAT_R32G32B32A32_SINT  | MTLVertexFormatInt4
 };
 
 // ===================================================================================
 // Index type
-//   VK: VkIndexType — https://registry.khronos.org/vulkan/specs/latest/man/html/VkIndexType.html
+//   VK: VkIndexType — https://docs.vulkan.org/refpages/latest/refpages/source/VkIndexType.html
 //   GL: glDrawElements 'type' — https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawElements.xhtml
 //   D3D12: DXGI_FORMAT_R16/R32_UINT in index buffer view — https://learn.microsoft.com/windows/win32/api/d3d12/ns-d3d12-d3d12_index_buffer_view
 //   Metal: MTLIndexType — https://developer.apple.com/documentation/metal/mtlindextype
 // ===================================================================================
 enum class IndexType : std::uint8_t {
-    Uint16,  // VK: std::uint16 | GL: GL_UNSIGNED_SHORT | D3D12: DXGI_FORMAT_R16_UINT | Metal: std::uint16
-    Uint32,  // VK: std::uint32 | GL: GL_UNSIGNED_INT   | D3D12: DXGI_FORMAT_R32_UINT | Metal: std::uint32
-    Uint8    // GL: GL_UNSIGNED_BYTE supported; VK: requires VK_EXT_index_type_uint8; D3D12/Metal: not supported
+    Uint16,  // VK: VK_INDEX_TYPE_UINT16 | GL: GL_UNSIGNED_SHORT | D3D12: DXGI_FORMAT_R16_UINT | Metal: MTLIndexTypeUInt16
+    Uint32,  // VK: VK_INDEX_TYPE_UINT32 | GL: GL_UNSIGNED_INT   | D3D12: DXGI_FORMAT_R32_UINT | Metal: MTLIndexTypeUInt32
+    Uint8    // GL: GL_UNSIGNED_BYTE | VK: VK_INDEX_TYPE_UINT8 (core VK 1.4; ext: VK_EXT_index_type_uint8) | D3D12/Metal: not supported
 };
 
 // ===================================================================================
 // Texture & buffer usage flags (unified for barriers/creation)
-//   VK: VkImageUsageFlags / VkBufferUsageFlags — https://docs.vulkan.org/spec/latest/chapters/formats.html (see usage in image/buffer chapters)
-//   GL: implicit (FBO attachments, sampling) — rough mapping
-//   D3D12: resource flags + state transitions
-//   Metal: MTLTextureUsage — https://developer.apple.com/documentation/metal/mtltextureusage
+//   Texture: VkImageUsageFlagBits — https://docs.vulkan.org/refpages/latest/refpages/source/VkImageUsageFlagBits.html
+//            GL: no explicit usage flags — usage is implicit (FBO attachment, sampler binding, etc.)
+//            D3D12_RESOURCE_FLAGS — https://learn.microsoft.com/windows/win32/api/d3d12/ne-d3d12-d3d12_resource_flags
+//            MTLTextureUsage — https://developer.apple.com/documentation/metal/mtltextureusage
+//   Buffer:  VkBufferUsageFlagBits — https://docs.vulkan.org/refpages/latest/refpages/source/VkBufferUsageFlagBits.html
+//            GL: no explicit usage flags — target (ARRAY_BUFFER, etc.) determines use at bind time
+//            D3D12: no buffer resource flags; usage is implicit via view type and resource state
+//            Metal: no MTLBuffer usage flags; any buffer can fill any role
 // ===================================================================================
 enum class TextureUsage : std::uint32_t {
     None            = 0,
-    Sampled         = 1u << 0,   // VK_SAMPLED_BIT | GL texture sampling | D3D12 SRV | Metal: ShaderRead
-    Storage         = 1u << 1,   // VK_STORAGE_BIT | GL image load/store | D3D12 UAV | Metal: ShaderWrite
-    ColorAttachment = 1u << 2,   // VK_COLOR_ATTACHMENT_BIT | GL color attach | D3D12 RTV | Metal: RenderTarget
-    DepthStencilAtt = 1u << 3,   // VK_DEPTH_STENCIL_ATTACHMENT_BIT | GL depth/stencil attach | D3D12 DSV | Metal: RenderTarget depth
-    TransferSrc     = 1u << 4,   // VK_TRANSFER_SRC_BIT | GL copy src | D3D12 COPY_SOURCE | Metal: Blit src
-    TransferDst     = 1u << 5    // VK_TRANSFER_DST_BIT | GL copy dst | D3D12 COPY_DEST   | Metal: Blit dst
+    Sampled         = 1u << 0,   // VK_IMAGE_USAGE_SAMPLED_BIT          | GL: implicit (texture unit bind) | D3D12: no flag (SRV; state NON_PIXEL_SHADER_RESOURCE / PIXEL_SHADER_RESOURCE) | Metal: shaderRead
+    Storage         = 1u << 1,   // VK_IMAGE_USAGE_STORAGE_BIT          | GL: image unit (glBindImageTexture) | D3D12: ALLOW_UNORDERED_ACCESS (UAV) | Metal: shaderWrite
+    ColorAttachment = 1u << 2,   // VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | GL: FBO color attachment (glFramebufferTexture2D) | D3D12: ALLOW_RENDER_TARGET | Metal: renderTarget
+    DepthStencilAtt = 1u << 3,   // VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | GL: FBO depth/stencil attachment | D3D12: ALLOW_DEPTH_STENCIL | Metal: renderTarget
+    TransferSrc     = 1u << 4,   // VK_IMAGE_USAGE_TRANSFER_SRC_BIT     | GL: implicit (glBlitFramebuffer / glCopyImageSubData src) | D3D12: no flag (state COPY_SOURCE) | Metal: no flag (any texture is blit-able)
+    TransferDst     = 1u << 5    // VK_IMAGE_USAGE_TRANSFER_DST_BIT     | GL: implicit (copy/blit dst) | D3D12: no flag (state COPY_DEST) | Metal: no flag (any texture is blit-able)
 };
 template<> struct wren::foundation::enable_flags<TextureUsage> : std::true_type {};
 
 enum class BufferUsage : std::uint32_t {
     None        = 0,
-    Vertex      = 1u << 0,  // VK_VERTEX_BUFFER_BIT | GL ARRAY_BUFFER | D3D12 VBV | Metal: vertex buffer
-    Index       = 1u << 1,  // VK_INDEX_BUFFER_BIT  | GL ELEMENT_ARRAY_BUFFER | D3D12 IBV | Metal: index buffer
-    Uniform     = 1u << 2,  // VK_UNIFORM_BUFFER_BIT| GL UNIFORM_BUFFER | D3D12 CBV | Metal: constant buffer
-    Storage     = 1u << 3,  // VK_STORAGE_BUFFER_BIT| GL shader storage | D3D12 UAV | Metal: buffer ShaderWrite
-    Indirect    = 1u << 4,  // VK_INDIRECT_BUFFER_BIT| GL draw indirect buffer | D3D12 indirect args | Metal: indirect buffers
-    TransferSrc = 1u << 5,  // copy src
-    TransferDst = 1u << 6   // copy dst
+    Vertex      = 1u << 0,  // VK_BUFFER_USAGE_VERTEX_BUFFER_BIT   | GL: GL_ARRAY_BUFFER target          | D3D12: no flag (bound via VBV)  | Metal: no flag (setVertexBuffer)
+    Index       = 1u << 1,  // VK_BUFFER_USAGE_INDEX_BUFFER_BIT    | GL: GL_ELEMENT_ARRAY_BUFFER target  | D3D12: no flag (bound via IBV)  | Metal: no flag (setIndexBuffer)
+    Uniform     = 1u << 2,  // VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT  | GL: GL_UNIFORM_BUFFER target        | D3D12: no flag (bound via CBV)  | Metal: no flag (setBytes / setBuffer)
+    Storage     = 1u << 3,  // VK_BUFFER_USAGE_STORAGE_BUFFER_BIT  | GL: GL_SHADER_STORAGE_BUFFER target | D3D12: ALLOW_UNORDERED_ACCESS   | Metal: no flag (read/write in shader)
+    Indirect    = 1u << 4,  // VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT | GL: GL_DRAW_INDIRECT_BUFFER target  | D3D12: no flag (ExecuteIndirect) | Metal: no flag (drawPrimitives indirect)
+    TransferSrc = 1u << 5,  // VK_BUFFER_USAGE_TRANSFER_SRC_BIT    | GL: implicit copy src               | D3D12: no flag (state COPY_SOURCE) | Metal: no flag
+    TransferDst = 1u << 6   // VK_BUFFER_USAGE_TRANSFER_DST_BIT    | GL: implicit copy dst               | D3D12: no flag (state COPY_DEST)   | Metal: no flag
 };
 template<> struct wren::foundation::enable_flags<BufferUsage> : std::true_type {};
 
 // ===================================================================================
 // Texture dimension & common pixel formats (compact set)
-//   VK formats — https://docs.vulkan.org/spec/latest/chapters/formats.html
-//   GL internal formats — e.g., GL_RGBA8, SRGB8_ALPHA8
-//   D3D: DXGI_FORMAT
-//   Metal: MTLPixelFormat
+//   VK: VkFormat — https://docs.vulkan.org/spec/latest/chapters/formats.html
+//   GL: sized internal formats — https://registry.khronos.org/OpenGL-Refpages/gl4/html/glTexImage2D.xhtml
+//   D3D: DXGI_FORMAT — https://learn.microsoft.com/windows/win32/api/dxgiformat/ne-dxgiformat-dxgi_format
+//   Metal: MTLPixelFormat — https://developer.apple.com/documentation/metal/mtlpixelformat
 // ===================================================================================
 enum class TextureDimension : std::uint8_t { Tex1D, Tex2D, Tex3D, Cube };
 
 enum class TextureFormat : std::uint16_t {
     // Color (UNORM, sRGB):
-    RGBA8_UNorm,         // VK_FORMAT_R8G8B8A8_UNORM | GL_RGBA8 | DXGI_FORMAT_R8G8B8A8_UNORM | MTLPixelFormatRGBA8Unorm
-    BGRA8_UNorm,         // VK_FORMAT_B8G8R8A8_UNORM | GL_BGRA8 (impl/extension) | DXGI_FORMAT_B8G8R8A8_UNORM | MTLPixelFormatBGRA8Unorm
-    RGBA8_sRGB,          // VK_FORMAT_R8G8B8A8_SRGB  | GL_SRGB8_ALPHA8 | DXGI_FORMAT_R8G8B8A8_UNORM_SRGB | MTL…sRGB
-    BGRA8_sRGB,          // VK_FORMAT_B8G8R8A8_SRGB  | GL_BGRA8_SRGB (ext) | DXGI_FORMAT_B8G8R8A8_UNORM_SRGB | MTL…sRGB
+    RGBA8_UNorm,         // VK_FORMAT_R8G8B8A8_UNORM        | GL_RGBA8             | DXGI_FORMAT_R8G8B8A8_UNORM        | MTLPixelFormatRGBA8Unorm
+    BGRA8_UNorm,         // VK_FORMAT_B8G8R8A8_UNORM        | n/a (no GL_BGRA8 internal format; BGRA is upload-only) | DXGI_FORMAT_B8G8R8A8_UNORM | MTLPixelFormatBGRA8Unorm
+    RGBA8_sRGB,          // VK_FORMAT_R8G8B8A8_SRGB         | GL_SRGB8_ALPHA8      | DXGI_FORMAT_R8G8B8A8_UNORM_SRGB   | MTLPixelFormatRGBA8Unorm_sRGB
+    BGRA8_sRGB,          // VK_FORMAT_B8G8R8A8_SRGB         | n/a (see BGRA8_UNorm note) | DXGI_FORMAT_B8G8R8A8_UNORM_SRGB | MTLPixelFormatBGRA8Unorm_sRGB
     // HDR/float:
-    RG16_Float,          // VK_FORMAT_R16G16_SFLOAT | GL_RG16F | DXGI_FORMAT_R16G16_FLOAT | MTL…RG16Float
-    RGBA16_Float,        // VK_FORMAT_R16G16B16A16_SFLOAT | GL_RGBA16F | DXGI_FORMAT_R16G16B16A16_FLOAT | MTL…RGBA16Float
-    RGBA32_Float,        // VK_FORMAT_R32G32B32A32_SFLOAT | GL_RGBA32F | DXGI_FORMAT_R32G32B32A32_FLOAT | MTL…RGBA32Float
-    R11G11B10_Float,     // VK_B10G11R11_UFLOAT_PACK32 | GL_R11F_G11F_B10F | DXGI_FORMAT_R11G11B10_FLOAT | MTL…RG11B10Float
-    RGB10A2_UNorm,       // VK_A2B10G10R10_UNORM_PACK32 | GL_RGB10_A2 | DXGI_FORMAT_R10G10B10A2_UNORM | MTL…RGB10A2Unorm
+    RG16_Float,          // VK_FORMAT_R16G16_SFLOAT         | GL_RG16F             | DXGI_FORMAT_R16G16_FLOAT           | MTLPixelFormatRG16Float
+    RGBA16_Float,        // VK_FORMAT_R16G16B16A16_SFLOAT   | GL_RGBA16F           | DXGI_FORMAT_R16G16B16A16_FLOAT     | MTLPixelFormatRGBA16Float
+    RGBA32_Float,        // VK_FORMAT_R32G32B32A32_SFLOAT   | GL_RGBA32F           | DXGI_FORMAT_R32G32B32A32_FLOAT     | MTLPixelFormatRGBA32Float
+    R11G11B10_Float,     // VK_FORMAT_B10G11R11_UFLOAT_PACK32 | GL_R11F_G11F_B10F  | DXGI_FORMAT_R11G11B10_FLOAT       | MTLPixelFormatRG11B10Float
+    RGB10A2_UNorm,       // VK_FORMAT_A2B10G10R10_UNORM_PACK32 | GL_RGB10_A2       | DXGI_FORMAT_R10G10B10A2_UNORM     | MTLPixelFormatRGB10A2Unorm
     // Depth/stencil:
-    D24S8,               // VK_FORMAT_D24_UNORM_S8_UINT | GL_DEPTH24_STENCIL8 | DXGI_FORMAT_D24_UNORM_S8_UINT | MTLDepth24Unorm_Stencil8
-    D32,                 // VK_FORMAT_D32_SFLOAT | GL_DEPTH_COMPONENT32F | DXGI_FORMAT_D32_FLOAT | MTLDepth32Float
-    D32S8,               // VK_FORMAT_D32_SFLOAT_S8_UINT | GL_DEPTH32F_STENCIL8 | DXGI_FORMAT_D32_FLOAT_S8X24_UINT | MTLDepth32Float_Stencil8
+    D24S8,               // VK_FORMAT_D24_UNORM_S8_UINT     | GL_DEPTH24_STENCIL8  | DXGI_FORMAT_D24_UNORM_S8_UINT     | MTLPixelFormatDepth24Unorm_Stencil8 (macOS only)
+    D32,                 // VK_FORMAT_D32_SFLOAT            | GL_DEPTH_COMPONENT32F | DXGI_FORMAT_D32_FLOAT            | MTLPixelFormatDepth32Float
+    D32S8,               // VK_FORMAT_D32_SFLOAT_S8_UINT    | GL_DEPTH32F_STENCIL8 | DXGI_FORMAT_D32_FLOAT_S8X24_UINT  | MTLPixelFormatDepth32Float_Stencil8
 };
 
 // Utilities
