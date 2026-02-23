@@ -13,7 +13,7 @@ ______________________________________________________________________
 1. [Prior Art & Inspiration](#2-prior-art--inspiration)
 1. [Layer Structure](#3-layer-structure)
 1. [API Layer — Core Abstractions](#4-api-layer--core-abstractions)
-   - 4.1 [Status & Error](#41-status--error)
+   - 4.1 [Status](#41-status)
    - 4.2 [Backend Enum](#42-backend-enum)
    - 4.3 [Features & Limits](#43-features--limits)
    - 4.4 [Device Creation](#44-device-creation)
@@ -118,8 +118,8 @@ flowchart TD
 
 Build targets follow the naming `wren.rhi.<backend>` (alias `wren::rhi.<backend>`).
 The API layer is a header-only/static target (`wren::rhi.api`) that every backend links
-against. Backends are built as **shared libraries by default** (`WREN_BUILD_SHARED_BACKENDS=ON`)
-so they can be swapped at runtime without relinking the engine.
+against. Backends are always built as **shared libraries** so they can be swapped at runtime
+without relinking the engine.
 
 Each backend exposes a single entry-point following the pattern established in
 `projects/libs/rhi/backends/<backend>/include/` so the engine can load it via a factory
@@ -131,7 +131,7 @@ ______________________________________________________________________
 
 All types live in `namespace wren::rhi`.
 
-### 4.1 Status & Error
+### 4.1 Status
 
 ```
 wren/rhi/api/api.hpp
@@ -139,27 +139,20 @@ wren/rhi/api/status.hpp  (standalone copy used by backends)
 ```
 
 ```cpp
-enum class Status { Ok, MissingRequiredFeature, UnsupportedFormat,
-                    UnsupportedSampleCount, UnsupportedQueueType,
-                    UnsupportedLimit, OutOfMemory, InvalidArgument, InternalError };
-
-struct Error {
-    Status      code    = Status::Ok;
-    const char* message = nullptr;   // short, user-facing reason
-    const char* detail  = nullptr;   // backend-specific context (optional)
-};
+enum class Status : uint8_t { Ok, MissingRequiredFeature, UnsupportedFormat,
+                              UnsupportedSampleCount, UnsupportedQueueType,
+                              UnsupportedLimit, OutOfMemory, InvalidArgument,
+                              InternalError };
 ```
+
+Factories return `Status` directly. `to_string(Status)` is provided for
+human-readable diagnostics.
 
 **Contract:**
 
 - Factories never return `Status::Ok` with a half-valid device.
-- Messages are short (< 80 chars) but actionable.
-- `detail` carries backend-specific context (e.g., `VkResult` string, HRESULT string).
-- The hot-path (recording, dispatch) does **not** return `Error`; it uses `assert`-style
-  contracts in debug builds only.
-
-This follows the approach used by [wgpu's `RequestDeviceError`](https://www.w3.org/TR/webgpu/#dom-gpudevice-lost)
-and DiligentEngine's `IRenderDevice::CreateX` return pattern.
+- The hot-path (recording, dispatch) does **not** return `Status`; it uses
+  `assert`-style contracts in debug builds only.
 
 ______________________________________________________________________
 

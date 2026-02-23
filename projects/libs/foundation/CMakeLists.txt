@@ -16,6 +16,7 @@ target_include_directories(wren.foundation INTERFACE
 target_sources(wren.foundation
     INTERFACE
         FILE_SET HEADERS BASE_DIRS "${WREN_FOUNDATION_INCLUDEDIR}" FILES
+            "${WREN_FOUNDATION_INCLUDEDIR}/wren/foundation/system/platform.hpp"
             "${WREN_FOUNDATION_INCLUDEDIR}/wren/foundation/utility/scope_exit.hpp"
             "${WREN_FOUNDATION_INCLUDEDIR}/wren/foundation/utility/unique_resource.hpp"
 )

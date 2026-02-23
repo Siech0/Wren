@@ -7,9 +7,12 @@
 #include <wren/foundation/utility/enum_utils.hpp>
 
 namespace wren::rhi {
-    // ===================================================================================
-// Backend metadata (no spec needed; this is just for your RIL bookkeeping)
-// ===================================================================================
+
+
+/// @brief Identifies the graphics API backend in use.
+///
+/// Used for logging, driver capability queries, and back-end-specific
+/// code path selection. Not exposed to GPU shaders.
 enum class Backend : std::uint8_t {
     OpenGL,      // GL core profile 3.3–4.6
     Vulkan,      // Khronos Vulkan
@@ -26,6 +29,12 @@ enum class Backend : std::uint8_t {
 //   GL: no explicit queues; work is serialized per context (glFlush/glFinish)
 //       https://registry.khronos.org/OpenGL-Refpages/gl4/html/glFinish.xhtml
 // ===================================================================================
+
+/// @brief Identifies the type of GPU command queue.
+///
+/// Determines which class of GPU operations a command list may record.
+/// Not all backends expose separate compute or transfer queues; the RHI
+/// may transparently alias them to the graphics queue when unavailable.
 enum class QueueType : std::uint8_t {
     Graphics,   // VK: GRAPHICS_BIT | D3D12: DIRECT | Metal: render encoder | GL: draw calls
     Compute,    // VK: COMPUTE_BIT  | D3D12: COMPUTE | Metal: compute encoder | GL: compute dispatch (4.3+)
@@ -41,6 +50,15 @@ enum class QueueType : std::uint8_t {
 //   D3D12: classic + Mesh/Amplification — https://microsoft.github.io/DirectX-Specs/d3d/MeshShader.html
 //   Metal: vertex/fragment/compute; mesh shaders on Apple platforms — https://developer.apple.com/videos/play/wwdc2022/10162/
 // ===================================================================================
+
+/// @brief Bitmask of programmable GPU pipeline stages.
+///
+/// Used when binding resources, specifying descriptor visibility, and
+/// defining push-constant ranges. Combine values with bitwise OR
+/// (operator| is enabled via @c wren::foundation::enable_flags).
+///
+/// @note Ray-tracing stages require backend support for ray tracing.
+/// @note Task/Mesh stages require hardware and driver support.
 enum class ShaderStage : std::uint32_t {
     None            = 0,
     Vertex          = 1u << 0,  // VK: VERTEX_BIT | GL: vertex | D3D12: VS | Metal: vertex
@@ -60,7 +78,6 @@ enum class ShaderStage : std::uint32_t {
     Intersection    = 1u << 12,
     Callable        = 1u << 13
 };
-template<> struct wren::foundation::enable_flags<ShaderStage> : std::true_type {};
 
 // ===================================================================================
 // Primitive Topology
@@ -69,6 +86,12 @@ template<> struct wren::foundation::enable_flags<ShaderStage> : std::true_type {
 //   D3D12: D3D_PRIMITIVE_TOPOLOGY — https://learn.microsoft.com/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_primitive_topology
 //   Metal: MTLPrimitiveType — https://developer.apple.com/documentation/metal/mtlprimitivetype
 // ===================================================================================
+
+/// @brief Controls how the input assembler forms primitives from vertices.
+///
+/// @note @c TriangleFan is not supported on D3D12 or Metal.
+/// @note @c PatchList requires an active tessellation pipeline and a
+///       patch control-point count set separately in the pipeline state.
 enum class PrimitiveTopology : std::uint8_t {
     PointList,        // VK_POINT_LIST | GL_POINTS | D3D: POINTLIST | MTLPrimitiveTypePoint
     LineList,         // VK_LINE_LIST  | GL_LINES  | D3D: LINELIST  | MTLPrimitiveTypeLine
@@ -86,6 +109,11 @@ enum class PrimitiveTopology : std::uint8_t {
 //   D3D12 rasterizer — https://learn.microsoft.com/windows/win32/api/d3d12/ns-d3d12-d3d12_rasterizer_desc
 //   Metal winding/cull — https://developer.apple.com/documentation/metal/mtlwinding , https://developer.apple.com/documentation/metal/mtlcullmode
 // ===================================================================================
+
+/// @brief Specifies which triangle faces are discarded by the rasterizer.
+///
+/// @note @c FrontAndBack culls all triangles; no geometry is rasterized.
+///       D3D12 and Metal do not support @c FrontAndBack natively.
 enum class CullMode : std::uint8_t {
     None,           // VK_CULL_MODE_NONE | GL: disable CULL_FACE | D3D12: NONE | Metal: none
     Front,          // VK_CULL_MODE_FRONT_BIT | GL_FRONT | D3D12: FRONT | Metal: front
@@ -93,6 +121,10 @@ enum class CullMode : std::uint8_t {
     FrontAndBack    // VK_CULL_MODE_FRONT_AND_BACK | GL_FRONT_AND_BACK | D3D12/Metal: not supported for raster draw
 };
 
+/// @brief Winding order that defines the front face of a triangle.
+///
+/// The front face determines which side is affected by @c CullMode::Back
+/// and @c CullMode::Front. Default convention across most APIs is @c CCW.
 enum class FrontFace : std::uint8_t {
     CCW,      // VK_FRONT_FACE_COUNTER_CLOCKWISE | GL_CCW (default) | D3D12: FrontCounterClockwise=TRUE | Metal: counterClockwise
     CW        // VK_FRONT_FACE_CLOCKWISE         | GL_CW             | D3D12: FrontCounterClockwise=FALSE | Metal: clockwise
@@ -105,6 +137,12 @@ enum class FrontFace : std::uint8_t {
 //   D3D12: DXGI_SAMPLE_DESC — https://learn.microsoft.com/windows/win32/api/dxgicommon/ns-dxgicommon-dxgi_sample_desc
 //   Metal: render pipeline rasterSampleCount — https://developer.apple.com/documentation/metal/mtlrenderpipelinedescriptor/rastersamplecount
 // ===================================================================================
+
+/// @brief Number of MSAA samples per pixel for render targets and framebuffers.
+///
+/// Higher counts improve anti-aliasing quality at the cost of memory
+/// bandwidth and storage. Query device capabilities before using
+/// counts above @c C8, as support is hardware-dependent.
 enum class SampleCount : std::uint8_t {
     C1  = 1,  // VK_SAMPLE_COUNT_1_BIT | GL: default | D3D12: Count=1 | Metal: 1
     C2  = 2,  // 2x
@@ -125,11 +163,20 @@ enum class SampleCount : std::uint8_t {
 //            D3D12_STENCIL_OP — https://learn.microsoft.com/windows/win32/api/d3d12/ne-d3d12-d3d12_stencil_op
 //            MTLStencilOperation — https://developer.apple.com/documentation/metal/mtlstenciloperation
 // ===================================================================================
+
+/// @brief Comparison function used for depth and stencil tests.
+///
+/// The test passes when @c (fragment_value OP stored_value) is true.
+/// The enumerator semantics map directly across all supported backends.
 enum class CompareOp : std::uint8_t {
     Never, Less, Equal, LessEqual, Greater, NotEqual, GreaterEqual, Always
     // Maps directly across VK/GL/D3D12/Metal
 };
 
+/// @brief Action applied to the stored stencil value on a test outcome.
+///
+/// Configured separately for front-facing and back-facing triangles,
+/// and for the stencil-fail, depth-fail, and depth-pass cases.
 enum class StencilOp : std::uint8_t {
     Keep,            // Keep existing value
     Zero,            // Write 0
@@ -152,6 +199,11 @@ enum class StencilOp : std::uint8_t {
 //            D3D12_BLEND_OP — https://learn.microsoft.com/windows/win32/api/d3d12/ne-d3d12-d3d12_blend_op
 //            MTLBlendOperation — https://developer.apple.com/documentation/metal/mtlblendoperation
 // ===================================================================================
+
+/// @brief Multiplier applied to the source or destination color during blending.
+///
+/// @note @c Src1* variants require dual-source blending hardware support.
+///       This feature is not available on Metal.
 enum class BlendFactor : std::uint8_t {
     Zero, One,
     SrcColor, OneMinusSrcColor,
@@ -165,10 +217,15 @@ enum class BlendFactor : std::uint8_t {
     Src1Alpha, OneMinusSrc1Alpha
 };
 
+/// @brief Arithmetic operator that combines the scaled source and destination colors.
 enum class BlendOp : std::uint8_t {
     Add, Subtract, ReverseSubtract, Min, Max
 };
 
+/// @brief Per-channel write-enable bitmask for a color attachment.
+///
+/// Setting to @c None disables all writes (e.g. for depth-only passes).
+/// Combine channels with bitwise OR (operator| via enable_flags).
 enum class ColorWriteMask : std::uint8_t {
     None = 0,       // VK: 0 | GL: glColorMask(false,...) | D3D12: 0 | Metal: 0
     R = 1 << 0,     // VK_COLOR_COMPONENT_R_BIT | D3D12_COLOR_WRITE_ENABLE_RED | MTLColorWriteMaskRed
@@ -177,7 +234,6 @@ enum class ColorWriteMask : std::uint8_t {
     A = 1 << 3,
     All = R | G | B | A
 };
-template<> struct wren::foundation::enable_flags<ColorWriteMask> : std::true_type {};
 
 // ===================================================================================
 // Sampler state
@@ -194,9 +250,14 @@ template<> struct wren::foundation::enable_flags<ColorWriteMask> : std::true_typ
 //            D3D12_STATIC_BORDER_COLOR — https://learn.microsoft.com/windows/win32/api/d3d12/ne-d3d12-d3d12_static_border_color
 //            MTLSamplerBorderColor — https://developer.apple.com/documentation/metal/mtlsamplerbordercolor (iOS 14+, macOS 10.12+, tvOS 16+)
 // ===================================================================================
+
+/// @brief Minification and magnification filter applied during texture sampling.
 enum class Filter : std::uint8_t { Nearest, Linear };
+
+/// @brief Interpolation mode used when selecting between mip levels.
 enum class MipmapMode : std::uint8_t { Nearest, Linear };
 
+/// @brief Wrapping behavior applied to texture coordinates outside [0, 1].
 enum class AddressMode : std::uint8_t {
     Repeat,             // VK_REPEAT | GL_REPEAT | D3D12_WRAP | Metal: repeat
     MirroredRepeat,     // VK_MIRRORED_REPEAT | GL_MIRRORED_REPEAT | D3D12_MIRROR | Metal: mirrorRepeat
@@ -205,6 +266,11 @@ enum class AddressMode : std::uint8_t {
     MirrorClampToEdge   // VK_MIRROR_CLAMP_TO_EDGE (1.2) | GL_MIRROR_CLAMP_TO_EDGE | D3D12: MIRROR_ONCE | Metal: mirrorClampToEdge (macOS 10.11+, iOS 14+, tvOS 16+)
 };
 
+/// @brief Fixed border color returned when @c AddressMode::ClampToBorder is active.
+///
+/// GL allows an arbitrary @c vec4 border color; this enum captures the three
+/// fixed choices available across all other backends.
+/// On Metal, border color support requires iOS 13+, macOS 10.12+, or tvOS 16+.
 enum class BorderColor : std::uint8_t {
     TransparentBlack,   // VK: VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK / INT_TRANSPARENT_BLACK | GL: {0,0,0,0} | D3D12: TRANSPARENT_BLACK | Metal: transparentBlack
     OpaqueBlack,        // VK: VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK / INT_OPAQUE_BLACK         | GL: {0,0,0,1} | D3D12: OPAQUE_BLACK       | Metal: opaqueBlack
@@ -218,6 +284,11 @@ enum class BorderColor : std::uint8_t {
 //   D3D: DXGI_FORMAT — https://learn.microsoft.com/windows/win32/api/dxgiformat/ne-dxgiformat-dxgi_format
 //   Metal: MTLVertexFormat — https://developer.apple.com/documentation/metal/mtlvertexformat
 // ===================================================================================
+
+/// @brief Per-vertex attribute data format for the input assembler.
+///
+/// Selects the element type, component count, and numeric interpretation
+/// (float / integer / normalized) for a single vertex buffer binding slot.
 enum class VertexFormat : std::uint16_t {
     // 32-bit floats:
     R32_Float,              // VK_FORMAT_R32_SFLOAT          | GL: GL_FLOAT (x1)       | DXGI_FORMAT_R32_FLOAT          | MTLVertexFormatFloat
@@ -254,6 +325,11 @@ enum class VertexFormat : std::uint16_t {
 //   D3D12: DXGI_FORMAT_R16/R32_UINT in index buffer view — https://learn.microsoft.com/windows/win32/api/d3d12/ns-d3d12-d3d12_index_buffer_view
 //   Metal: MTLIndexType — https://developer.apple.com/documentation/metal/mtlindextype
 // ===================================================================================
+
+/// @brief Data type of each element stored in an index buffer.
+///
+/// @note @c Uint8 is not natively supported on D3D12 or Metal, and
+///       requires @c VK_EXT_index_type_uint8 (or Vulkan 1.4) on Vulkan.
 enum class IndexType : std::uint8_t {
     Uint16,  // VK: VK_INDEX_TYPE_UINT16 | GL: GL_UNSIGNED_SHORT | D3D12: DXGI_FORMAT_R16_UINT | Metal: MTLIndexTypeUInt16
     Uint32,  // VK: VK_INDEX_TYPE_UINT32 | GL: GL_UNSIGNED_INT   | D3D12: DXGI_FORMAT_R32_UINT | Metal: MTLIndexTypeUInt32
@@ -271,6 +347,12 @@ enum class IndexType : std::uint8_t {
 //            D3D12: no buffer resource flags; usage is implicit via view type and resource state
 //            Metal: no MTLBuffer usage flags; any buffer can fill any role
 // ===================================================================================
+
+/// @brief Bitmask declaring the intended usage of a texture resource.
+///
+/// Must be specified at resource creation time so the backend can place
+/// the resource in an appropriate memory heap and validate resource state
+/// transitions. Combine flags with bitwise OR (operator| via enable_flags).
 enum class TextureUsage : std::uint32_t {
     None            = 0,
     Sampled         = 1u << 0,   // VK_IMAGE_USAGE_SAMPLED_BIT          | GL: implicit (texture unit bind) | D3D12: no flag (SRV; state NON_PIXEL_SHADER_RESOURCE / PIXEL_SHADER_RESOURCE) | Metal: shaderRead
@@ -280,8 +362,13 @@ enum class TextureUsage : std::uint32_t {
     TransferSrc     = 1u << 4,   // VK_IMAGE_USAGE_TRANSFER_SRC_BIT     | GL: implicit (glBlitFramebuffer / glCopyImageSubData src) | D3D12: no flag (state COPY_SOURCE) | Metal: no flag (any texture is blit-able)
     TransferDst     = 1u << 5    // VK_IMAGE_USAGE_TRANSFER_DST_BIT     | GL: implicit (copy/blit dst) | D3D12: no flag (state COPY_DEST) | Metal: no flag (any texture is blit-able)
 };
-template<> struct wren::foundation::enable_flags<TextureUsage> : std::true_type {};
 
+/// @brief Bitmask declaring the intended usage of a buffer resource.
+///
+/// Must be specified at resource creation time. Combine flags with
+/// bitwise OR (operator| via enable_flags). On GL and Metal, usage is
+/// implicit; these flags are used for RHI-level validation and driver
+/// hint selection only.
 enum class BufferUsage : std::uint32_t {
     None        = 0,
     Vertex      = 1u << 0,  // VK_BUFFER_USAGE_VERTEX_BUFFER_BIT   | GL: GL_ARRAY_BUFFER target          | D3D12: no flag (bound via VBV)  | Metal: no flag (setVertexBuffer)
@@ -292,7 +379,6 @@ enum class BufferUsage : std::uint32_t {
     TransferSrc = 1u << 5,  // VK_BUFFER_USAGE_TRANSFER_SRC_BIT    | GL: implicit copy src               | D3D12: no flag (state COPY_SOURCE) | Metal: no flag
     TransferDst = 1u << 6   // VK_BUFFER_USAGE_TRANSFER_DST_BIT    | GL: implicit copy dst               | D3D12: no flag (state COPY_DEST)   | Metal: no flag
 };
-template<> struct wren::foundation::enable_flags<BufferUsage> : std::true_type {};
 
 // ===================================================================================
 // Texture dimension & common pixel formats (compact set)
@@ -301,8 +387,14 @@ template<> struct wren::foundation::enable_flags<BufferUsage> : std::true_type {
 //   D3D: DXGI_FORMAT — https://learn.microsoft.com/windows/win32/api/dxgiformat/ne-dxgiformat-dxgi_format
 //   Metal: MTLPixelFormat — https://developer.apple.com/documentation/metal/mtlpixelformat
 // ===================================================================================
+
+/// @brief Dimensionality of a texture resource.
 enum class TextureDimension : std::uint8_t { Tex1D, Tex2D, Tex3D, Cube };
 
+/// @brief Pixel format of a texture or render-target resource.
+///
+/// Depth/stencil formats may only be used with @c TextureUsage::DepthStencilAtt.
+/// BGRA formats may have limited GL support (upload-only internal format).
 enum class TextureFormat : std::uint16_t {
     // Color (UNORM, sRGB):
     RGBA8_UNorm,         // VK_FORMAT_R8G8B8A8_UNORM        | GL_RGBA8             | DXGI_FORMAT_R8G8B8A8_UNORM        | MTLPixelFormatRGBA8Unorm
@@ -333,5 +425,14 @@ enum class TextureFormat : std::uint16_t {
 }
 
 } // namespace wren::rhi
+
+// enable_flags specializations live outside wren::rhi so the template is
+// specialised in its own (wren::foundation) enclosing namespace.
+namespace wren::foundation {
+template<> struct enable_flags<wren::rhi::ShaderStage>    : std::true_type {};
+template<> struct enable_flags<wren::rhi::ColorWriteMask> : std::true_type {};
+template<> struct enable_flags<wren::rhi::TextureUsage>   : std::true_type {};
+template<> struct enable_flags<wren::rhi::BufferUsage>    : std::true_type {};
+} // namespace wren::foundation
 
 #endif // WREN_RHI_API_ENUMS_HPP

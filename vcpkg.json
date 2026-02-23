@@ -5,6 +5,9 @@
   "license": "MIT",
   "dependencies": [
     "glm",
+    "spdlog",
+    "vulkan",
+    "vulkan-hpp",
     "vulkan-memory-allocator",
     "glfw3",
     "gtest",

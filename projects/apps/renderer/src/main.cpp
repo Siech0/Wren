@@ -6,6 +6,8 @@
 #include <wren/platform/window.hpp>
 #include <wren/foundation/utility/scope_exit.hpp>
 #include <wren/rhi/loader.hpp>
+#include <wren/rhi/api/enums.hpp>
+#include <wren/rhi/api/features.hpp>
 
 
 auto main(int argc, char *argv[]) -> int {
@@ -34,17 +36,46 @@ auto main(int argc, char *argv[]) -> int {
     }
 
     // --- Load backend DLL ---------------------------------------------------
-    auto result = wren::rhi::BackendLibrary::load(selected);
-    if (!result) {
-      std::print(std::cerr, "Failed to load backend: {}\n", result.error());
+    auto lib_result = wren::rhi::BackendLibrary::load(selected);
+    if (!lib_result) {
+      std::print(std::cerr, "Failed to load backend: {}\n", lib_result.error());
       return 1;
     }
 
-    auto& backend = *result;
-    const auto id = backend.backend_id();
-    std::print("Backend loaded. backend_id() = {} ({})\n",
-               static_cast<int>(id),
-               wren::rhi::to_string(id));
+    auto& backend = *lib_result;
+    std::print("Backend loaded: {} (id={})\n",
+               wren::rhi::to_string(backend.backend_id()),
+               static_cast<int>(backend.backend_id()));
+
+    // --- Create device ------------------------------------------------------
+#ifdef NDEBUG
+    constexpr auto k_device_flags = wren::rhi::DeviceFlag::None;
+#else
+    constexpr auto k_device_flags = wren::rhi::DeviceFlag::Debug;
+#endif
+
+    const wren::rhi::DeviceDesc desc{
+        .flags = k_device_flags,
+    };
+
+    auto dev_result = backend.create_device(desc);
+    if (!dev_result) {
+      std::print(std::cerr, "Failed to create device: {}\n", dev_result.error());
+      return 1;
+    }
+
+    auto& device = *dev_result;
+
+    // --- Print capabilities -------------------------------------------------
+    const auto& caps = device.capabilities();
+    std::print("Device created successfully.\n");
+    std::print("  API version : {}.{}\n", caps.apiVersionMajor, caps.apiVersionMinor);
+    std::print("  Backend     : {}\n",    wren::rhi::to_string(caps.backend));
+    std::print("  Max 2D tex  : {}px\n",  caps.limits.maxImageDimension2D);
+    std::print("  Max 3D tex  : {}px\n",  caps.limits.maxImageDimension3D);
+    std::print("  Max MSAA    : {}x\n",   caps.limits.maxMSAASamples);
+    std::print("  UBO align   : {} bytes\n", caps.limits.uniformBufferAlignment);
+    std::print("  SSBO align  : {} bytes\n", caps.limits.storageBufferAlignment);
 
     // --- Window + main loop -------------------------------------------------
     wren::platform::window::init_system();
