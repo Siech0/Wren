@@ -44,10 +44,6 @@ jobs:
             os: ubuntu-latest
             preset: default-unix
 
-          - name: macOS
-            os: macos-latest
-            preset: default-unix
-
     steps:
       - uses: actions/checkout@v4
 
@@ -61,13 +57,9 @@ jobs:
             libgl1-mesa-dev libglu1-mesa-dev libvulkan-dev \
             libxinerama-dev libxcursor-dev xorg-dev
 
-      - name: Install dependencies (macOS)
-        if: runner.os == 'macOS'
-        run: brew install ninja
-
       # ---- vcpkg setup -------------------------------------------------------
       # Windows runners ship with vcpkg at VCPKG_INSTALLATION_ROOT.
-      # Linux / macOS: clone and bootstrap a fresh instance.
+      # Linux: clone and bootstrap a fresh instance.
       # A workspace-local binary cache is used so actions/cache can persist it.
 
       - name: Set up vcpkg (Windows)
@@ -80,7 +72,7 @@ jobs:
             Out-File -FilePath $env:GITHUB_ENV -Append
           New-Item -ItemType Directory -Force "$env:GITHUB_WORKSPACE\.vcpkg-cache" | Out-Null
 
-      - name: Set up vcpkg (Linux / macOS)
+      - name: Set up vcpkg (Linux)
         if: runner.os != 'Windows'
         run: |
           git clone https://github.com/microsoft/vcpkg.git "${{ github.workspace }}/vcpkg"
