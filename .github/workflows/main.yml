@@ -47,7 +47,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ---- System dependencies -----------------------------------------------
+      # ---- Compiler / system setup -------------------------------------------
+
+      # Puts cl.exe and MSVC headers first on PATH, preventing CMake from
+      # accidentally picking up MinGW's g++ which is also present on the runner.
+      - name: Set up MSVC developer environment (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
@@ -55,7 +61,8 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y ninja-build curl zip unzip tar pkg-config \
             libgl1-mesa-dev libglu1-mesa-dev libvulkan-dev \
-            libxinerama-dev libxcursor-dev xorg-dev
+            libxinerama-dev libxcursor-dev xorg-dev \
+            doxygen
 
       # ---- vcpkg setup -------------------------------------------------------
       # Windows runners ship with vcpkg at VCPKG_INSTALLATION_ROOT.

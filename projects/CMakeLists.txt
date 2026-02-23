@@ -6,7 +6,7 @@ target_include_directories(wren.version_info INTERFACE
     "$<BUILD_INTERFACE:${WREN_VERSION_INCLUDEDIR}>"
     "$<INSTALL_INTERFACE:include>")
 
-include(GnuInstallDirs)
+include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 install(TARGETS wren.version_info
     EXPORT wren_targets
